@@ -1,39 +1,39 @@
 {
  "app": "zapper",
- "versie": "1.9",
+ "versie": "1.9.1",
  "datum": "2026-10-16",
  "notities": {
-  "nl": "• Alle Zappers: elke lamp beheert nu de andere ZAPPERS in je netwerk, zonder iets te installeren. Open een lamp in je browser en tik op Alle Zappers: live lampen, stand en deuntjes, en in één keer bijwerken, instellingen, wifi, kopiëren, back-up en een QR-code voor de telefoon-app.\n• Geen standaardwachtwoord meer. Je kiest er een van minstens 8 tekens bij het instellen; een lamp die via bluetooth is ingesteld vraagt erom bij het eerste bezoek. Een lamp met het oude fabriekswachtwoord meldt dat op zijn overzicht.\n• Lampen praten alleen met elkaar binnen je eigen netwerk, en alleen met een sessie van het wachtwoord.",
-  "en": "• All Zappers: every lamp now manages the other ZAPPERs on your network, with nothing to install. Open any lamp in your browser, on a phone or a computer, and tap All Zappers: each lamp with its own picture that follows the real one, Automatic, Always on and Always off, and the tunes for a zap and a celebration.\n• Pick several lamps to act on them together: update to the newest firmware, test zap, celebration, find me, lamp mode, restart, tunes, common settings, Wi-Fi, copy this lamp's settings, one backup file, and a QR code that puts them under My Zappers in the phone app.\n• No default password any more. You choose one of at least 8 characters when you set the lamp up; a lamp set up over Bluetooth asks for one on the first visit. Until it has one, its Bluetooth PIN is its own name. A lamp that still has the old factory password says so on its overview."
+  "nl": "• Het standaardwachtwoord is weer Bitcoin21, zoals vóór 1.9: laat je het bij de installatie leeg, dan is dat het wachtwoord. Verander het na de eerste keer inloggen bij Instellingen; het overzicht herinnert je eraan tot je dat doet. De bluetooth-pincode is het wachtwoord van de lamp, dus standaard Bitcoin21.",
+  "en": "• The default password is Bitcoin21 again, as before 1.9: leave it empty at setup and that is the password; change it after the first login under Settings, and the overview reminds you until you do. The Bluetooth PIN is the lamp password, so Bitcoin21 by default. All Zappers and Zapper control try it on lamps that still have it."
  },
  "firmware": {
   "Zapper REV A": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9/zapper-reva-1.9-ota.bin",
-   "sha256": "141a797594e4162369de884b730d4f5a1b713ebdfe006062c468e33503fbe145",
-   "grootte": 2467472
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9.1/zapper-reva-1.9.1-ota.bin",
+   "sha256": "85717ce7068e7ca4aa5aa3289a38b5a2376c3468d9ae2208bd6f0a84ee8e0319",
+   "grootte": 2464304
   },
   "ESP32-C6-Zero + MOSFET": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9/lamp01-1.9-ota.bin",
-   "sha256": "7dda46e0c82c31f78107a54e651d07a0513fb2cd662302c278b3120265e9cf10",
-   "grootte": 2443216
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9.1/lamp01-1.9.1-ota.bin",
+   "sha256": "55cffc847e5f7f286bfb7aeabc378f2aa481a9e6f1ba01cbaf94cd8f4be2931c",
+   "grootte": 2440080
   }
  },
  "fabriek": {
   "Zapper REV A": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9/zapper-reva-1.9-factory.bin",
-   "sha256": "fff3659e35fdb05a2a4f167807d865b778c0365dd24e9400a0b9694d6bc53db4",
-   "grootte": 2598544
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9.1/zapper-reva-1.9.1-factory.bin",
+   "sha256": "31dcc35b36c86016ce7dc93aa7c6a7329104a77f522e060f674c5a74799339f6",
+   "grootte": 2595376
   },
   "ESP32-C6-Zero + MOSFET": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9/lamp01-1.9-factory.bin",
-   "sha256": "d5f28ea9ee50a3cbf77d77ec1d2fe657a38904295d7a8a71633998aaead67146",
-   "grootte": 2508752
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.9.1/lamp01-1.9.1-factory.bin",
+   "sha256": "6186581f8bd541f55dfb7bba4b732bdc99ff17471104859ca968eb57ba7911c8",
+   "grootte": 2505616
   }
  },
  "control": {
-  "versie": "2.1",
+  "versie": "2.2",
   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/control/zapper-control.py",
-  "sha256": "54149b402d72465b7435838086e3fb856d79a529c341ef988ba2ef79d8932e42",
-  "grootte": 152146
+  "sha256": "e91365b8b47592cb6aaa1ff0cfd131cd70c1a0ca908956d7c8b4700918e51618",
+  "grootte": 152105
  }
 }
