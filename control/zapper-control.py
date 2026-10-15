@@ -42,7 +42,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # The version of this program itself. Raise it with every change that should
 # reach other people's copies; the release step publishes it.
-CONTROL_VERSIE = "2.2"
+CONTROL_VERSIE = "2.3"
 
 WORTEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Running from the source tree (firmware sources and git history), or as a
@@ -724,6 +724,8 @@ def lijst(staat):
         info = {k: v for k, v in l.info.items()}
         info["image"] = image_beschikbaar(staat, info.get("board"))
         info["eigenWachtwoord"] = l.wachtwoord != STANDAARD_WACHTWOORD
+        # for "open this lamp, already logged in" (lamps from 1.10 read it after the #)
+        info["sessie"] = (l.koek or "").partition("=")[2] if (l.koek or "").startswith("sid=") else ""
         uit.append(info)
     return uit
 
@@ -1402,7 +1404,7 @@ function kaart(l,vink,ww,open){
   :`<div class="fout">${l.fout==='wrong password'?t('fouteWw'):l.fout==='password needed'?t('wwNodigUit'):esc(l.fout||t('geenToegang'))}</div>`}
   <div class="kaartvoet"><details class="ww" data-ip="${id}" ${open.has(l.ip)||!kan?'open':''}><summary>${!kan?t('wwNodig'):l.eigenWachtwoord?t('wwEigen'):t('wwStandaard')}</summary>
    <input type="password" data-ww="${id}" value="${esc(ww[l.ip]||'')}" placeholder="${t('wwPh')}" autocomplete="off"></details>
-   <a href="http://${id}/" target="_blank" rel="noopener">${id}</a></div>
+   <a href="http://${id}/${/^[0-9a-f]{32}$/.test(l.sessie||'')?'#sessie='+l.sessie:''}" target="_blank" rel="noopener">${id}</a></div>
  </article>`}
 function tekenLampen(){
  const vink=new Set(gekozen()),open=new Set([...document.querySelectorAll('details.ww[open]')].map(d=>d.dataset.ip)),ww={};
@@ -1625,7 +1627,19 @@ def maak_handler(staat):
                     "map": herkomst, "onlineFout": staat.get("online_fout", ""),
                     "control": control_update(staat)}
 
+        def _eigen_host(self):
+            # Only requests addressed to this computer itself. A website that points
+            # its own name at 127.0.0.1 (DNS rebinding) sends its name as Host and is
+            # refused, so it cannot read the list with the lamp sessions.
+            host = (self.headers.get("Host") or "").rsplit(":", 1)[0].strip("[]").lower()
+            if host in ("127.0.0.1", "localhost", "::1"):
+                return True
+            self.send_error(403)
+            return False
+
         def do_GET(self):
+            if not self._eigen_host():
+                return
             staat["leef"] = time.time()
             pad, _, vraag = self.path.partition("?")
             q = urllib.parse.parse_qs(vraag)
@@ -1676,6 +1690,8 @@ def maak_handler(staat):
                 self.send_error(404)
 
         def do_POST(self):
+            if not self._eigen_host():
+                return
             if self.path == "/afsluiten":
                 # A newer Zapper control asks this one to make room. The custom header
                 # cannot come from a web page without a preflight we never answer.
