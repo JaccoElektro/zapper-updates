@@ -83,7 +83,8 @@ h1 span{background:var(--brand);-webkit-background-clip:text;background-clip:tex
 section{margin-bottom:64px}
 h2{font:800 clamp(26px,3.4vw,38px)/1.1 var(--display);letter-spacing:-.035em;margin:0 0 10px}
 .sub{color:var(--soft);margin:0 0 26px;max-width:40em}
-.raster{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.raster{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media (max-width:1100px){.raster{grid-template-columns:repeat(2,1fr)}}
 .kaart{background:var(--glass);border:1px solid var(--hair);border-radius:24px;padding:24px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 24px 50px -22px rgba(0,0,0,.75);-webkit-backdrop-filter:blur(26px) saturate(160%);backdrop-filter:blur(26px) saturate(160%)}
 .kaart h3{font:750 19px/1.25 var(--display);letter-spacing:-.02em;margin:12px 0 8px}
@@ -228,6 +229,8 @@ footer a{color:var(--soft)}
    <h3 data-t="k2"></h3><p data-t="k2t"></p></div>
   <div class="kaart"><div class="icoon"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/></svg></div>
    <h3 data-t="k3"></h3><p data-t="k3t"></p></div>
+  <div class="kaart"><div class="icoon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+   <h3 data-t="k4"></h3><p data-t="k4t"></p></div>
  </div>
 </section>
 
@@ -241,10 +244,11 @@ footer a{color:var(--soft)}
 <section id="start" class="alleenweb">
  <h2 data-t="startKop"></h2>
  <p class="sub" data-t="startSub"></p>
- <div class="knoppen" style="margin-bottom:18px"><a class="knop" href="control/zapper-control.py" download="zapper-control.py">
-  <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-t="download"></span></a><span class="klein" id="pcVersie"></span></div>
+ <div class="knoppen" style="margin-bottom:18px"><a class="knop" id="pcDownload" href="#">
+  <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span id="pcDownloadTekst"></span></a><span class="klein" id="pcVersie"></span></div>
  <div class="os" id="os"><button data-os="win">Windows</button><button data-os="mac">Mac</button><button data-os="linux">Linux</button></div>
- <div class="kaart"><ol class="stappen" id="stappen"></ol></div>
+ <div class="kaart"><ol class="stappen" id="stappen"></ol>
+  <p class="klein" style="margin:14px 0 0"><span data-t="metPython"></span> <a href="control/zapper-control.py" download="zapper-control.py">zapper-control.py</a></p></div>
 </section>
 
 <section id="telefoon" class="alleenweb">
@@ -329,9 +333,12 @@ const T={
  watSub:["Elke Zapper krijgt een kaart met zijn eigen lamp, die live meeknippert bij een zap. Tik op de lamp om hem aan of uit te zetten.","Every Zapper gets a card with its own lamp, which blinks along live on a zap. Tap the lamp to switch it on or off."],
  k1:["Updates in één klik","Updates in one click"],k1t:["Alle Zappers naar de nieuwste firmware, één voor één, en daarna gecontroleerd.","Every Zapper to the newest firmware, one after the other, and checked afterwards."],
  k2:["Feestjes en deuntjes","Celebrations and tunes"],k2t:["Kies per lamp een deuntje bij elke zap en bij een feestje, of geef ze allemaal een ander.","Choose a tune per lamp for every zap and for a celebration, or give each one a different one."],
+ k4:["Zapper-scherm","Zapper screen"],k4t:["Een schoon scherm voor een tv of tablet: elke lamp met zijn nostr-profiel en een QR, en hij licht live op bij een zap.","A clean screen for a TV or tablet: every lamp with its nostr profile and a QR, lighting up live on a zap."],
  k3:["Alles in bulk","Everything in bulk"],k3t:["Instellingen, wifi, mijlpalen en een back-up voor al je Zappers tegelijk.","Settings, Wi-Fi, milestones and a backup for all your Zappers at once."],
  startKop:["Liever een programma? Zapper control","Prefer a program? Zapper control"],
- startSub:["Voor gevorderden: een klein programma op je computer dat hetzelfde doet, ook met Zappers van vóór 1.9. Je computer moet op hetzelfde netwerk zitten als je Zappers; het praat alleen met je eigen lampen.","For advanced users: a small program on your computer that does the same, also with Zappers from before 1.9. Your computer has to be on the same network as your Zappers; it only talks to your own lamps."],
+ startSub:["Een programma voor je computer dat hetzelfde doet, ook met Zappers van vóór 1.9, met het Zapper-scherm en een QR per lamp. Downloaden, dubbelklikken, klaar: er hoeft niets bij geïnstalleerd te worden. Je computer moet op hetzelfde netwerk zitten als je Zappers.","A program for your computer that does the same, also with Zappers from before 1.9, with the Zapper screen and a QR per lamp. Download, double-click, done: nothing else to install. Your computer has to be on the same network as your Zappers."],
+ downloadVoor:["Download voor %o","Download for %o"],
+ metPython:["Heb je Python al, of een Mac met een Intel-chip? Dan kan het ook met het losse bestand:","Already have Python, or a Mac with an Intel chip? Then the single file works too:"],
  voet:["ZAPPER is ontworpen en gebouwd door JaccoElektro, aangeboden aan BitPopArt. Op nostr:","ZAPPER is designed and built by JaccoElektro, offered to BitPopArt. On nostr:"],
  nieuwKop:["Nieuwste firmware","Newest firmware"],
  nieuwSub:["Een ZAPPER vanaf versie 1.8 ziet dit zelf en meldt het op zijn overzicht. Bijwerken doe je bij Systeem → Updates, of voor al je lampen tegelijk bij Alle Zappers.","A ZAPPER from version 1.8 sees this by itself and shows it on its overview. Update under System → Updates, or for all your lamps at once under All Zappers."],
@@ -396,15 +403,15 @@ const T={
  bekijk:["Profiel","Profile"],openApp:["In app","In app"],kopieer:["Kopieer","Copy"],gekopieerd:["Gekopieerd","Copied"],
  privacy:["Geen cookies, geen tracking, geen account. Mijn Zappers blijft op dit toestel, en Zapper control praat alleen met de lampen in je eigen netwerk. Voor de zap-knoppen leest deze pagina de openbare nostr-profielen hierboven van een paar relays.","No cookies, no tracking, no account. My Zappers stays on this device, and Zapper control only talks to the lamps on your own network. For the zap buttons this page reads the public nostr profiles above from a few relays."],
  stappen:{
-  win:[["Installeer <b>Python 3</b> van <a href=\"https://www.python.org/downloads/\" target=\"_blank\" rel=\"noopener\">python.org</a>. Vink bij de installatie <b>Add python.exe to PATH</b> aan.","Install <b>Python 3</b> from <a href=\"https://www.python.org/downloads/\" target=\"_blank\" rel=\"noopener\">python.org</a>. Tick <b>Add python.exe to PATH</b> during setup."],
-       ["Download <b>zapper-control.py</b> met de knop hierboven.","Download <b>zapper-control.py</b> with the button above."],
-       ["Dubbelklik op het bestand, of typ in een opdrachtvenster <code>py zapper-control.py</code>. Je browser opent Zapper control.","Double-click the file, or type <code>py zapper-control.py</code> in a command window. Your browser opens Zapper control."]],
-  mac:[["Installeer <b>Python 3</b> van <a href=\"https://www.python.org/downloads/\" target=\"_blank\" rel=\"noopener\">python.org</a> (op een Mac staat het soms al).","Install <b>Python 3</b> from <a href=\"https://www.python.org/downloads/\" target=\"_blank\" rel=\"noopener\">python.org</a> (a Mac sometimes has it already)."],
-       ["Download <b>zapper-control.py</b> met de knop hierboven.","Download <b>zapper-control.py</b> with the button above."],
-       ["Open <b>Terminal</b> en typ <code>python3 ~/Downloads/zapper-control.py</code>. Je browser opent Zapper control.","Open <b>Terminal</b> and type <code>python3 ~/Downloads/zapper-control.py</code>. Your browser opens Zapper control."]],
-  linux:[["Python 3 zit er meestal al op; anders <code>sudo apt install python3</code>.","Python 3 is usually there already; otherwise <code>sudo apt install python3</code>."],
-       ["Download <b>zapper-control.py</b> met de knop hierboven.","Download <b>zapper-control.py</b> with the button above."],
-       ["Typ <code>python3 ~/Downloads/zapper-control.py</code>. Je browser opent Zapper control.","Type <code>python3 ~/Downloads/zapper-control.py</code>. Your browser opens Zapper control."]]
+  win:[["Download <b>Zapper-control-windows.exe</b> met de knop hierboven.","Download <b>Zapper-control-windows.exe</b> with the button above."],
+       ["Dubbelklik erop. Zegt Windows <b>Windows heeft uw pc beschermd</b>? Klik op <b>Meer info</b> en dan <b>Toch uitvoeren</b>. Dat hoeft maar één keer: het programma is gratis en niet bij Microsoft gekocht.","Double-click it. Does Windows say <b>Windows protected your PC</b>? Click <b>More info</b>, then <b>Run anyway</b>. Only once: the program is free and not bought from Microsoft."],
+       ["Je browser opent Zapper control. Vraagt de firewall of het op je netwerk mag? Kies <b>Privénetwerken</b> en <b>Toegang toestaan</b>.","Your browser opens Zapper control. Does the firewall ask about your network? Choose <b>Private networks</b> and <b>Allow access</b>."]],
+  mac:[["Download <b>Zapper-control-mac.zip</b> met de knop hierboven en open hem: je krijgt <b>Zapper control</b>. Sleep dat naar <b>Programma's</b>.","Download <b>Zapper-control-mac.zip</b> with the button above and open it: you get <b>Zapper control</b>. Drag it to <b>Applications</b>."],
+       ["De eerste keer zegt je Mac dat hij het niet kan controleren. Klik met de rechtermuisknop op het programma, kies <b>Open</b> en nog eens <b>Open</b>. Lukt dat niet: <b>Systeeminstellingen</b>, <b>Privacy en beveiliging</b>, <b>Open toch</b>.","The first time your Mac says it cannot check it. Right-click the program, choose <b>Open</b> and <b>Open</b> again. Does that not work: <b>System Settings</b>, <b>Privacy &amp; Security</b>, <b>Open Anyway</b>."],
+       ["Je browser opent Zapper control. Vraagt je Mac om apparaten in je <b>lokale netwerk</b> te zoeken? Kies <b>Sta toe</b>.","Your browser opens Zapper control. Does your Mac ask to find devices on your <b>local network</b>? Choose <b>Allow</b>."]],
+  linux:[["Download <b>Zapper-control-linux</b> met de knop hierboven.","Download <b>Zapper-control-linux</b> with the button above."],
+       ["Maak het uitvoerbaar: rechtermuisknop, <b>Eigenschappen</b>, <b>Uitvoeren als programma</b>. Of in een terminal: <code>chmod +x ~/Downloads/Zapper-control-linux</code>.","Make it executable: right-click, <b>Properties</b>, <b>Run as a program</b>. Or in a terminal: <code>chmod +x ~/Downloads/Zapper-control-linux</code>."],
+       ["Dubbelklik erop, of start <code>~/Downloads/Zapper-control-linux</code>. Je browser opent Zapper control.","Double-click it, or run <code>~/Downloads/Zapper-control-linux</code>. Your browser opens Zapper control."]]
  }
 };
 let taal='nl';try{taal=localStorage.getItem('zc_taal')||((navigator.language||'').toLowerCase().startsWith('nl')?'nl':'en')}catch(e){}
@@ -414,12 +421,16 @@ let tel=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator
 let installPrompt=null;
 const i=()=>taal==='nl'?0:1,$=id=>document.getElementById(id);
 let manifest=null;
+// Zapper control as a program, built by GitHub from the public repository.
+const RELEASE='https://github.com/JaccoElektro/zapper-updates/releases/latest/download/';
+const PROGRAMMA={win:RELEASE+'Zapper-control-windows.exe',mac:RELEASE+'Zapper-control-mac.zip',linux:RELEASE+'Zapper-control-linux'};
 function teken(){
  document.documentElement.lang=taal;
  document.querySelectorAll('[data-t]').forEach(e=>{const v=T[e.dataset.t];if(v)e.textContent=v[i()]});
  document.querySelectorAll('[data-taal]').forEach(b=>b.classList.toggle('actief',b.dataset.taal===taal));
  document.querySelectorAll('[data-os]').forEach(b=>b.classList.toggle('actief',b.dataset.os===os));
  $('stappen').innerHTML=T.stappen[os].map(s=>`<li>${s[i()]}</li>`).join('');
+ $('pcDownload').href=PROGRAMMA[os];$('pcDownloadTekst').textContent=T.downloadVoor[i()].replace('%o',{win:'Windows',mac:'Mac',linux:'Linux'}[os]);
  $('stOpen').innerHTML=T.stOpen.map(s=>`<li>${s[i()]}</li>`).join('');
  $('vragenLijst').innerHTML=T.vragen.map(([q,a])=>`<details><summary>${q[i()]}</summary><p>${a[i()]}</p></details>`).join('');
  tekenCheck();

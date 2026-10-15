@@ -42,12 +42,16 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # The version of this program itself. Raise it with every change that should
 # reach other people's copies; the release step publishes it.
-CONTROL_VERSIE = "2.3"
+CONTROL_VERSIE = "2.4"
 
 WORTEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Running from the source tree (firmware sources and git history), or as a
 # downloaded single file? Only the latter updates itself.
 IN_REPO = os.path.isdir(os.path.join(WORTEL, "src")) and os.path.isdir(os.path.join(WORTEL, ".git"))
+# Packed as a program (Windows .exe, Mac app, Linux binary): it cannot replace
+# itself with a .py file, so a new version is a download from the page instead.
+ALS_PROGRAMMA = bool(getattr(sys, "frozen", False))
+DOWNLOADPAGINA = "https://zappercontrol.netlify.app/#start"
 # Online updates: the public channel and the release key's public half (the same
 # as RELEASE_PUBKEY in the firmware).
 UPDATE_BRON = "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/"
@@ -245,7 +249,7 @@ class Lamp:
                 board=st.get("board", "?"), versie=st.get("versie", ""), host=st.get("host") or self.info["host"],
                 mac=st.get("mac") or self.info.get("mac", ""), ssid=st.get("ssid", ""), rssi=st.get("rssi"),
                 volt=st.get("volt"), zone=meting.get("zone"), relays=st.get("relaysOp"),
-                zaps=st.get("zaps"), sats=st.get("sats"), uptime=st.get("uptime"),
+                zaps=st.get("zaps"), sats=st.get("sats"), uptime=st.get("uptime"), npub=st.get("npub", ""),
                 lampStand=st.get("lampStand"), lampNiveau=st.get("lampNiveau"), tempC=st.get("tempC"),
                 stapNog=mijlpaal.get("nog") if mijlpaal.get("aan") else None,
                 standaard=st.get("standaardWachtwoord"), online=True, toegang=True, fout="",
@@ -427,7 +431,7 @@ def control_update(staat):
     c = (staat.get("online") or {}).get("control") or {}
     nieuw = c.get("versie", "")
     return {"huidig": CONTROL_VERSIE, "nieuw": nieuw if versie_tuple(nieuw) > versie_tuple(CONTROL_VERSIE) else "",
-            "kan": not IN_REPO}
+            "kan": not IN_REPO and not ALS_PROGRAMMA, "download": DOWNLOADPAGINA if ALS_PROGRAMMA else ""}
 
 
 def werk_zelf(staat):
@@ -947,6 +951,20 @@ h3{font:700 13px/1.3 var(--display);margin:0 0 12px;color:var(--amber);letter-sp
 .leegvak{justify-content:center;align-items:center;text-align:center;color:var(--quiet);font-size:13px}
 .regel{display:flex;gap:8px;align-items:center}
 .regel select,.regel input{flex:1;min-width:0}
+.schermknop{display:inline-flex;align-items:center;gap:8px}
+.schermknop svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.zapqr{position:relative;z-index:1;display:flex;align-items:center;gap:12px;width:100%;padding:10px;border-radius:var(--r-s);cursor:pointer;text-align:left;color:var(--ink);
+  background:linear-gradient(135deg,rgba(157,0,249,.22),rgba(255,127,0,.14));border:1px solid rgba(255,255,255,.08);font:inherit}
+.zapqr:hover{border-color:rgba(251,200,8,.55)}
+.zapqr img{width:64px;height:64px;flex:none;border-radius:10px;background:#fff;padding:4px;image-rendering:pixelated}
+.zapqr b{display:block;font-size:15px;color:#fbc808}
+.zapqr small{display:block;font:12px var(--mono,monospace);color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zapqr span{min-width:0}
+.qrlaag{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px;background:rgba(8,3,18,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.qrlaag .kaart{max-width:380px;width:100%;text-align:center}
+.qrlaag .groot{background:#fff;border-radius:22px;padding:14px;margin:14px auto;box-shadow:0 18px 40px -16px rgba(157,0,249,.9)}
+.qrlaag .groot img{width:100%;display:block;image-rendering:pixelated}
+.qrlaag .npub{font:12.5px var(--mono,monospace);color:var(--soft);word-break:break-all}
 .kaartvoet{position:relative;z-index:1;margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid var(--hair);font-size:12.5px}
 .kaartvoet a{font-family:var(--mono);font-size:12px;color:var(--quiet);text-decoration:none}
 .kaartvoet a:hover{color:var(--amber)}
@@ -1069,6 +1087,7 @@ dialog::backdrop{background:rgba(6,2,14,.66);-webkit-backdrop-filter:blur(10px);
   <div><h1>Zapper control</h1><div class="status" id="status"><span class="stip" data-t="zoeken"></span></div></div></div>
  <div class="kopacties">
   <span class="taal"><button data-taal="nl">NL</button><button data-taal="en">EN</button></span>
+  <button class="knop klein schermknop" id="schermKnop"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-t="schermKnop"></span></button>
   <button class="ikoon" id="zoek" data-t-title="zoekOpnieuw"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button></div>
 </header>
 
@@ -1089,6 +1108,9 @@ dialog::backdrop{background:rgba(6,2,14,.66);-webkit-backdrop-filter:blur(10px);
 <div class="sectie"><h2 data-t="zappersKop"></h2><p data-t="zappersUit"></p></div>
 <div class="balk"><label class="vinkje"><input type="checkbox" id="alles"><i></i><span data-t="allesKiezen"></span></label><span class="teller" id="teller"></span></div>
 <div class="lampen" id="lampen"><div class="kaart leeg" data-t="zoeken"></div></div>
+<div class="qrlaag verborgen" id="qrLaag"><div class="kaart"><h2 id="qrNaam" style="margin:0"></h2><p class="zacht" data-t="qrUit" style="margin:6px 0 0"></p>
+ <div class="groot"><img id="qrGroot" alt="QR"></div><p class="npub" id="qrNpub"></p>
+ <div style="display:flex;gap:8px;justify-content:center;margin-top:12px"><button class="knop grijs" id="qrKopieer" data-t="kopieerNpub"></button><button class="knop" id="qrDicht" data-t="sluiten"></button></div></div></div>
 <div class="sectie verborgen" id="offKop"><h2 data-t="offlineKop"></h2><p data-t="offlineUit"></p></div>
 <div class="lampen offlijst" id="offline"></div>
 
@@ -1268,7 +1290,10 @@ const T={
  firmwareUit:["Elke Zapper krijgt het image voor zijn eigen board uit de nieuwste release, en wordt na de herstart gecontroleerd op de nieuwe versie.","Each Zapper gets the image for its own board from the newest release, and is checked for the new version once it is back."],
  bijwerken:["Gekozen bijwerken","Update selected"],
  snelUit:["Op elke gekozen Zapper. Een nagebootste zap telt mee in de Zap stack, maar zet niets op nostr; handig om een doel of mijlpaal te testen.","On every selected Zapper. A simulated zap counts in the Zap stack but posts nothing on nostr; handy to test a goal or milestone."],
- welke:["Welke is dit","Which one is this"],testzap:["Testzap","Test zap"],zelftest:["Zelftest","Self-test"],publiceer:["Profiel publiceren","Publish profile"],
+ welke:["Welke is dit","Which one is this"],
+ schermKnop:["Zapper-scherm","Zapper screen"],zapDeze:["Zap deze lamp","Zap this lamp"],kopieerNpub:["Kopieer npub","Copy npub"],sluiten:["Sluiten","Close"],
+ qrUit:["Scan met je nostr-app en zap: de lamp licht op.","Scan with your nostr app and zap: the lamp lights up."],gekopieerdNpub:["npub gekopieerd","npub copied"],
+ schermOud:["Het Zapper-scherm zit in firmware 1.11 en nieuwer. Werk een lamp bij en probeer het opnieuw.","The Zapper screen is in firmware 1.11 and newer. Update a lamp and try again."],testzap:["Testzap","Test zap"],zelftest:["Zelftest","Self-test"],publiceer:["Profiel publiceren","Publish profile"],
  herstart:["Herstarten","Restart"],tellersNul:["Tellers op 0","Counters to 0"],lampstand:["Lampstand","Lamp mode"],zet:["Zet","Set"],
  auto:["Automatisch","Automatic"],altijdAan:["Altijd aan","Always on"],altijdUit:["Altijd uit","Always off"],
  nepZap:["Zap nabootsen (sats)","Simulate a zap (sats)"],bootsNa:["Nabootsen","Simulate"],
@@ -1400,10 +1425,11 @@ function kaart(l,vink,ww,open){
   ${kan?`<div class="seg">${seg}</div>
    <div class="cijfers"><div><b>${nf(l.zaps)}</b><span>${t('zaps')}</span></div><div><b>${nf(l.sats)}</b><span>${t('sats')}</span></div><div><b>${duur(l.uptime)}</b><span>${t('aanSinds')}</span></div></div>
    <div class="chips">${versieChip(l)}${staatChips(l)}</div>
+   ${l.npub?`<button class="zapqr" data-qr="${id}"><img src="http://${id}/api/qr?wat=zap" alt="" loading="lazy"><span><b>${t('zapDeze')}</b><small>${esc(l.npub.slice(0,14)+'…'+l.npub.slice(-6))}</small></span></button>`:''}
    ${tuneBlok(l,id,tunes)}`
   :`<div class="fout">${l.fout==='wrong password'?t('fouteWw'):l.fout==='password needed'?t('wwNodigUit'):esc(l.fout||t('geenToegang'))}</div>`}
-  <div class="kaartvoet"><details class="ww" data-ip="${id}" ${open.has(l.ip)||!kan?'open':''}><summary>${!kan?t('wwNodig'):l.eigenWachtwoord?t('wwEigen'):t('wwStandaard')}</summary>
-   <input type="password" data-ww="${id}" value="${esc(ww[l.ip]||'')}" placeholder="${t('wwPh')}" autocomplete="off"></details>
+  <div class="kaartvoet">${kan?'<span></span>':`<details class="ww" data-ip="${id}" open><summary>${t('wwNodig')}</summary>
+   <input type="password" data-ww="${id}" value="${esc(ww[l.ip]||'')}" placeholder="${t('wwPh')}" autocomplete="off"></details>`}
    <a href="http://${id}/${/^[0-9a-f]{32}$/.test(l.sessie||'')?'#sessie='+l.sessie:''}" target="_blank" rel="noopener">${id}</a></div>
  </article>`}
 function tekenLampen(){
@@ -1432,7 +1458,8 @@ function toon(d){
  $('status').innerHTML=`<span class="stip ${on.length?'ok':'warn'}">${t(on.length==1?'statusN':'statusNs',{n:on.length})}</span>`+
   (versie?`<span class="stip ok">${t(d.map==='online'?'firmwareOnline':'images',{v:esc(versie)})}</span>`:`<span class="stip warn">${t(d.onlineFout?'kanaalWeg':'geenImages')}</span>`)+
   (achter?`<span class="stip warn">${t('achter',{n:achter})}</span>`:'')+(off?`<span class="stip err">${t('offlineN',{n:off})}</span>`:'');
- const c=d.control||{};$('controlLet').classList.toggle('verborgen',!(c.nieuw&&c.kan));
+ const c=d.control||{};$('controlLet').classList.toggle('verborgen',!(c.nieuw&&(c.kan||c.download)));
+ $('controlKnop').dataset.download=c.download||'';
  if(c.nieuw)$('controlTekst').textContent=t('controlNieuw',{n:c.nieuw,h:c.huidig});
  const oud=d.bron&&(!versie||vergelijk(d.bron,versie)>0);$('bouwlet').classList.toggle('verborgen',!oud);
  if(oud)$('bouwtekst').textContent=versie?t('bronNieuwer',{b:d.bron,v:versie}):t('bronGeenImages',{b:d.bron});
@@ -1443,6 +1470,18 @@ function toon(d){
  tekenLampen()}
 async function zoek(){$('zoek').classList.add('draait');try{toon(await(await fetch('/zoek')).json())}finally{$('zoek').classList.remove('draait')}}
 $('zoek').onclick=zoek;
+// The Zapper screen lives on the lamps (from 1.11): open it on one of them, with
+// all lamps online, and a way back to this page.
+function vgl(a,b){const x=String(a).match(/\d+/g)||[],y=String(b).match(/\d+/g)||[];
+ for(let i=0;i<Math.max(x.length,y.length);i++){const d=(+x[i]||0)-(+y[i]||0);if(d)return d<0?-1:1}return 0}
+$('schermKnop').onclick=()=>{const aan=lampen.filter(l=>l.online),gastheer=aan.find(l=>vgl(l.versie||'0','1.11')>=0);
+ if(!gastheer){alert(t('schermOud'));return}
+ location.href='http://'+gastheer.ip+'/scherm?l='+encodeURIComponent(aan.map(l=>l.ip).join(','))+'&terug='+encodeURIComponent(location.origin+'/')};
+function toonQr(ip){const l=lampen.find(x=>x.ip===ip);if(!l)return;$('qrNaam').textContent=l.naam||l.host;
+ $('qrGroot').src='http://'+ip+'/api/qr?wat=zap';$('qrNpub').textContent=l.npub||'';$('qrKopieer').dataset.npub=l.npub||'';$('qrLaag').classList.remove('verborgen')}
+$('qrDicht').onclick=()=>$('qrLaag').classList.add('verborgen');
+$('qrLaag').onclick=e=>{if(e.target===$('qrLaag'))$('qrLaag').classList.add('verborgen')};
+$('qrKopieer').onclick=()=>{try{navigator.clipboard.writeText($('qrKopieer').dataset.npub).then(()=>meld(t('gekopieerdNpub')))}catch(e){}};
 $('alles').onchange=e=>{document.querySelectorAll('[data-kies]:not(:disabled)').forEach(c=>c.checked=e.target.checked);tel()};
 $('tabs').onclick=e=>{const k=e.target.dataset.tab;if(!k)return;
  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('actief',b===e.target));
@@ -1458,6 +1497,7 @@ $('lampen').addEventListener('click',async e=>{const b=e.target.closest('button'
  if(b.dataset.schakel){const ip=b.dataset.schakel,s=live[ip],brandt=s?s.niveau>0:!!(lampen.find(x=>x.ip===ip)||{}).lampNiveau;
   zetStand(ip,brandt?'uit':'aan');return}
  if(b.dataset.stand){zetStand(b.dataset.ip,b.dataset.stand);return}
+ if(b.dataset.qr){toonQr(b.dataset.qr);return}
  const ip=b.dataset.hernoem||b.dataset.welke||b.dataset.speel||b.dataset.open||b.dataset.vergeet;const l=lampen.find(x=>x.ip===ip);if(!l)return;
  try{
   if(b.dataset.vergeet){toon(await post('/vergeet',{ip}));return}
@@ -1567,6 +1607,7 @@ document.querySelectorAll('[data-een]').forEach(b=>b.onclick=async()=>{
 
 // ---- Zapper control updates itself: replace, restart, and reload this page
 $('controlKnop').onclick=async()=>{
+ if($('controlKnop').dataset.download){window.open($('controlKnop').dataset.download,'_blank','noopener');return}
  const voor=await(await fetch('/wie')).json().catch(()=>({}));
  try{await post('/zelfupdate',{})}catch(f){alert(f.message);return}
  $('controlTekst').textContent=t('controlBezig');$('controlKnop').disabled=true;
@@ -1894,6 +1935,14 @@ def maak_plaats(poort, eigen_bouw):
 
 
 def main():
+    if ALS_PROGRAMMA and sys.stdout is None:
+        # Started by a double-click, without a console window: keep what it says
+        # in a log file instead of losing it.
+        try:
+            os.makedirs(CACHE, exist_ok=True)
+            sys.stdout = sys.stderr = open(os.path.join(CACHE, "zapper-control.log"), "a", buffering=1, encoding="utf-8")
+        except OSError:
+            pass
     p = argparse.ArgumentParser(description="Zapper control: manage the Zappers on your network.")
     p.add_argument("--map", help="folder with the images (default: newest dist/zapper-*)")
     p.add_argument("--poort", type=int, default=8770, help="port of the page on 127.0.0.1")
@@ -1905,7 +1954,7 @@ def main():
 
     staat = {"map": os.path.abspath(a.map) if a.map else nieuwste_map(), "lampen": {}, "klus": Klus(),
              "leef": time.time(), "token": os.urandom(16).hex(), "slot": threading.Lock(),
-             "bouw": int(os.path.getmtime(os.path.abspath(__file__)))}
+             "bouw": int(os.path.getmtime(sys.executable if ALS_PROGRAMMA else os.path.abspath(__file__)))}
     for ip, info in lees_bekend().items():
         staat["lampen"][ip] = Lamp({"ip": ip, **info})
     online_manifest(staat, vers=True)

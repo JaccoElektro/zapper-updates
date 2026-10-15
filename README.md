@@ -28,4 +28,4 @@ ZAPPER on your network, updates them from here, and updates itself.
 
 ## Newest
 
-Version **1.10**, 2026-10-16.
+Version **1.11**, 2026-10-16.
