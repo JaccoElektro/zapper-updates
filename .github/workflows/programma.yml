@@ -39,6 +39,10 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           pyinstaller --windowed --name "Zapper control" --icon beeld/icon-512.png --osx-bundle-identifier app.netlify.zappercontrol control/zapper-control.py
+          # macOS asks before an app may use the local network; it needs a reason to show
+          /usr/libexec/PlistBuddy -c "Add :NSLocalNetworkUsageDescription string 'Zapper control looks for your ZAPPER lamps on your own network.'" "dist/Zapper control.app/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Add :NSBonjourServices array" -c "Add :NSBonjourServices:0 string _zapper._tcp" "dist/Zapper control.app/Contents/Info.plist"
+          codesign --force --deep --sign - "dist/Zapper control.app"
           ditto -c -k --keepParent "dist/Zapper control.app" ${{ matrix.naam }}
       - name: Linux
         if: runner.os == 'Linux'

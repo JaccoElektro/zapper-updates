@@ -42,7 +42,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # The version of this program itself. Raise it with every change that should
 # reach other people's copies; the release step publishes it.
-CONTROL_VERSIE = "2.4"
+CONTROL_VERSIE = "2.6"
 
 WORTEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Running from the source tree (firmware sources and git history), or as a
@@ -79,6 +79,9 @@ VELDEN = {
     "meldUrl": str, "webhook": str, "lud16": str, "naam": str, "bedankNote": bool,
     "stapAan": bool, "stapSats": int, "doelAan": bool, "doelNaam": str, "doelSats": int,
     "doelDeuntje": bool, "deuntje": str, "zapDeuntje": str,
+    # nostr: profile, relays, what it follows, thank-you note, owner for DM commands
+    "weergavenaam": str, "over": str, "plaatje": str, "banner": str, "nip05": str,
+    "relays": str, "volgModus": int, "volgPub": str, "bedankTekst": str, "eigenaar": str, "btcBlok": bool,
 }
 
 
@@ -283,7 +286,8 @@ class Lamp:
                 "sats": st.get("sats"), "grootste": st.get("grootste"), "uptime": st.get("uptime"),
                 "mac": st.get("mac"), "tempC": st.get("tempC"), "rssiGem": st.get("rssiGem"),
                 "herstartReden": st.get("herstartReden"), "npub": st.get("npub"),
-                "velden": velden, "log": log}
+                "velden": velden, "log": log,
+                "sessie": (self.koek or "").partition("=")[2] if (self.koek or "").startswith("sid=") else ""}
 
     def upload(self, bestand):
         inhoud = open(bestand, "rb").read()
@@ -808,7 +812,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
   background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.2px);background-size:26px 26px;
   -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 75%)}
 @keyframes zweef{to{transform:translate3d(3vmax,-2vmax,0) rotate(2deg) scale(1.05)}}
-button,input,select{font-family:inherit;color:inherit}
+button,input,select,textarea{font-family:inherit;color:inherit}
 a{color:var(--amber)}
 .wrap{max-width:1180px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 22px calc(80px + env(safe-area-inset-bottom))}
 .verborgen{display:none!important}
@@ -979,13 +983,13 @@ details.ww input{margin-top:8px}
 
 /* ---- fields */
 label{display:block;font-size:13px;font-weight:600;color:var(--soft);margin:0 0 6px}
-input,select{width:100%;padding:10px 13px;background:var(--field);border:1px solid rgba(255,255,255,.11);border-radius:var(--r-s);color:var(--ink);
+input,select,textarea{width:100%;padding:10px 13px;background:var(--field);border:1px solid rgba(255,255,255,.11);border-radius:var(--r-s);color:var(--ink);
   font-size:16px;min-height:44px;transition:border-color .15s,box-shadow .15s,background .15s;-webkit-appearance:none;appearance:none}
-input:hover,select:hover{border-color:rgba(184,77,255,.45)}
+input:hover,select:hover,textarea:hover{border-color:rgba(184,77,255,.45)}
 select{background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23c2b6dc' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 13px center;background-size:11px;padding-right:36px}
 select option{background:#1d0f33}
-input:focus,select:focus{outline:0;border-color:var(--purple2);box-shadow:0 0 0 4px rgba(157,0,249,.32)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--purple2);box-shadow:0 0 0 4px rgba(157,0,249,.32)}
 input::placeholder{color:#7d7097}
 .velden{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,232px),1fr));gap:16px 18px;margin-bottom:18px}
 .velden .breed{grid-column:1/-1}
@@ -995,6 +999,14 @@ input::placeholder{color:#7d7097}
   box-shadow:0 8px 24px -8px rgba(157,0,249,.9),inset 0 1px 0 rgba(255,255,255,.25);transition:filter .15s,transform .1s,box-shadow .2s}
 .knop:hover{filter:brightness(1.08) saturate(1.1);box-shadow:0 10px 30px -8px rgba(196,29,216,.95),inset 0 1px 0 rgba(255,255,255,.25)}
 .knop:active{transform:scale(.97)}
+a.knop{text-decoration:none}
+.versieregel{margin:26px auto 90px;text-align:center;font-size:13px;color:var(--quiet)}
+.linkknop{border:0;background:none;color:var(--soft);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
+.linkknop:hover{color:#fff}
+.npubrij{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.npubrij img{width:96px;height:96px;flex:none;border-radius:12px;background:#fff;padding:5px;image-rendering:pixelated}
+.npubtekst{min-width:0}.npubtekst code{display:block;font-size:12px;word-break:break-all;margin-bottom:8px;color:var(--soft)}
+.paneelinhoud textarea{width:100%;resize:vertical;min-height:70px;line-height:1.45;font-size:14.5px}
 .knop.grijs{background:rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
 .knop.grijs:hover{background:rgba(157,0,249,.22)}
 .knop.rood{background:rgba(237,31,51,.2);color:#ffa39b;box-shadow:none}
@@ -1087,6 +1099,7 @@ dialog::backdrop{background:rgba(6,2,14,.66);-webkit-backdrop-filter:blur(10px);
   <div><h1>Zapper control</h1><div class="status" id="status"><span class="stip" data-t="zoeken"></span></div></div></div>
  <div class="kopacties">
   <span class="taal"><button data-taal="nl">NL</button><button data-taal="en">EN</button></span>
+  <a class="knop klein grijs schermknop" href="https://zappercontrol.netlify.app/#flashen" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M7 7h10v5a5 5 0 0 1-10 0z"/><path d="M12 17v4"/></svg><span data-t="flashKnop"></span></a>
   <button class="knop klein schermknop" id="schermKnop"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-t="schermKnop"></span></button>
   <button class="ikoon" id="zoek" data-t-title="zoekOpnieuw"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button></div>
 </header>
@@ -1239,15 +1252,37 @@ dialog::backdrop{background:rgba(6,2,14,.66);-webkit-backdrop-filter:blur(10px);
      <button class="knop grijs klein" id="pDoelNul" data-t="telOpnieuw" style="margin-left:6px"></button></div>
    </div></section>
 
-  <section class="kaart"><h3 data-t="pProfiel"></h3>
+  <section class="kaart"><h3 data-t="pNostr"></h3>
+   <div class="npubrij"><img id="pNpubQr" alt="QR"><div class="npubtekst"><code id="pNpub"></code>
+    <div class="knoppen"><button class="knop grijs klein" id="pNpubKopie" data-t="kopieerNpub"></button><a class="knop grijs klein" id="pNpubLink" target="_blank" rel="noopener">njump</a></div></div></div>
    <div class="velden">
     <div><label data-t="profielNaam"></label><input data-p="naam" maxlength="60"></div>
+    <div><label data-t="weergavenaam"></label><input data-p="weergavenaam" maxlength="60"></div>
+    <div class="breed"><label data-t="over"></label><input data-p="over" maxlength="250"></div>
+    <div class="breed"><label data-t="plaatje"></label><input data-p="plaatje" placeholder="https://…"></div>
+    <div class="breed"><label data-t="banner"></label><input data-p="banner" placeholder="https://…"></div>
     <div><label data-t="lud16"></label><input data-p="lud16" placeholder="you@example.com"></div>
+    <div><label data-t="nip05"></label><input data-p="nip05" placeholder="lamp@example.com"></div>
+    <div class="breed"><label data-t="relaysL"></label><textarea data-p="relays" data-lijst rows="3"></textarea></div>
+    <div><label data-t="volgModusL"></label><select data-p="volgModus" data-num><option value="0" data-t="volg0"></option><option value="1" data-t="volg1"></option><option value="2" data-t="volg2"></option></select></div>
+    <div class="breed" id="pVolgVak"><label data-t="volgPubL"></label><textarea data-p="volgPub" data-npubs rows="3" placeholder="npub1…"></textarea></div>
+    <div><label data-t="bedankje"></label><select data-p="bedankNote" data-bool><option value="1" data-t="aan"></option><option value="0" data-t="uit"></option></select></div>
+    <div class="breed"><label data-t="bedankTekstL"></label><textarea data-p="bedankTekst" rows="2" maxlength="280"></textarea><span class="hint" data-t="bedankTekstUit"></span></div>
+    <div class="breed"><label data-t="eigenaarL"></label><input data-p="eigenaar" placeholder="npub1…"><span class="hint" data-t="eigenaarUit"></span></div>
     <div class="breed"><label data-t="meldUrl"></label><div class="regel"><input data-p="meldUrl" placeholder="https://ntfy.sh/…">
      <button class="knop grijs" id="pMeldTest" data-t="test"></button></div></div>
-    <div><label data-t="bedankje"></label><select data-p="bedankNote" data-bool><option value="1" data-t="aan"></option><option value="0" data-t="uit"></option></select></div>
    </div>
-   <div class="knoppen"><button class="knop grijs klein" data-een="publiceer" data-t="publiceer"></button></div></section>
+   <div class="knoppen"><button class="knop grijs klein" data-een="publiceer" data-t="publiceer"></button></div><p class="hint" data-t="publiceerUit"></p></section>
+
+  <section class="kaart"><h3 data-t="pBericht"></h3>
+   <textarea id="pNotitie" rows="3" maxlength="2000"></textarea>
+   <div class="knoppen" style="margin-top:10px"><button class="knop" id="pNotitieKnop" data-t="plaats"></button></div>
+   <p class="hint" data-t="berichtUit"></p></section>
+
+  <section class="kaart"><h3 data-t="pSleutel"></h3>
+   <p class="hint" data-t="sleutelUit" style="margin-top:0"></p>
+   <div class="regel"><input id="pNsec" type="password" placeholder="nsec1…" autocomplete="off" spellcheck="false"><button class="knop grijs" id="pNsecKnop" data-t="importeer"></button></div>
+   <div class="knoppen" style="margin-top:10px"><button class="knop rood klein" id="pNieuweSleutel" data-t="nieuweSleutel"></button></div></section>
 
   <section class="kaart"><h3 data-t="pActies"></h3>
    <div class="knoppen" style="margin-bottom:14px">
@@ -1264,6 +1299,7 @@ dialog::backdrop{background:rgba(6,2,14,.66);-webkit-backdrop-filter:blur(10px);
   <a class="knop grijs" id="pOpen" target="_blank" rel="noopener" style="text-decoration:none;display:inline-grid;place-items:center" data-t="openLamp"></a>
   <button class="knop" id="pBewaar" data-t="opslaan"></button></div></div>
 </div></dialog>
+<div class="versieregel"><span id="versieTekst"></span> · <button class="linkknop" id="zoekUpdates" data-t="zoekUpdates"></button> <span id="updUitslag"></span></div>
 <div class="melding verborgen" id="melding"></div>
 <div class="zwevend" id="zwevend"><span id="zwTekst"></span><button class="knop" id="zwKnop" data-t="naarActies"></button></div>
 
@@ -1291,7 +1327,7 @@ const T={
  bijwerken:["Gekozen bijwerken","Update selected"],
  snelUit:["Op elke gekozen Zapper. Een nagebootste zap telt mee in de Zap stack, maar zet niets op nostr; handig om een doel of mijlpaal te testen.","On every selected Zapper. A simulated zap counts in the Zap stack but posts nothing on nostr; handy to test a goal or milestone."],
  welke:["Welke is dit","Which one is this"],
- schermKnop:["Zapper-scherm","Zapper screen"],zapDeze:["Zap deze lamp","Zap this lamp"],kopieerNpub:["Kopieer npub","Copy npub"],sluiten:["Sluiten","Close"],
+ schermKnop:["Zapper-scherm","Zapper screen"],flashKnop:["Nieuwe Zapper flashen","Flash a new Zapper"],zapDeze:["Zap deze lamp","Zap this lamp"],kopieerNpub:["Kopieer npub","Copy npub"],sluiten:["Sluiten","Close"],
  qrUit:["Scan met je nostr-app en zap: de lamp licht op.","Scan with your nostr app and zap: the lamp lights up."],gekopieerdNpub:["npub gekopieerd","npub copied"],
  schermOud:["Het Zapper-scherm zit in firmware 1.11 en nieuwer. Werk een lamp bij en probeer het opnieuw.","The Zapper screen is in firmware 1.11 and newer. Update a lamp and try again."],testzap:["Testzap","Test zap"],zelftest:["Zelftest","Self-test"],publiceer:["Profiel publiceren","Publish profile"],
  herstart:["Herstarten","Restart"],tellersNul:["Tellers op 0","Counters to 0"],lampstand:["Lampstand","Lamp mode"],zet:["Zet","Set"],
@@ -1319,7 +1355,24 @@ const T={
  sluiten:["Sluiten","Close"],pLamp:["Lamp","Lamp"],pFeest:["Geluid en feestjes","Sound and celebrations"],deuntje:["Feestdeuntje","Celebration tune"],geenZoemer:["Geen zoemer op dit board, dus geen deuntjes.","No buzzer on this board, so no tunes."],
  updateVoorDeuntjes:["Update naar 1.6 of nieuwer voor deuntjes.","Update to 1.6 or newer for tunes."],vanaf17:["vanaf firmware 1.7","from firmware 1.7"],
  bijZap:["Bij een zap","On a zap"],bijFeest:["Feestje","Celebration"],piepKort:["Korte piep","Short beep"],zapGeluid:["Geluid bij een zap","Sound on a zap"],zapPiep:["Korte piep (standaard)","Short beep (default)"],speel:["Speel","Play"],stop:["Stop","Stop"],
- telOpnieuw:["Opnieuw vanaf 0","Count again from 0"],pProfiel:["Profiel en meldingen","Profile and alerts"],profielNaam:["Profielnaam","Profile name"],test:["Test","Test"],
+ telOpnieuw:["Opnieuw vanaf 0","Count again from 0"],
+ pNostr:["Nostr","Nostr"],weergavenaam:["Weergavenaam","Display name"],over:["Over deze lamp","About this lamp"],plaatje:["Profielfoto (url)","Profile picture (URL)"],banner:["Banner (url)","Banner (URL)"],
+ nip05:["Nostr-adres (NIP-05)","Nostr address (NIP-05)"],relaysL:["Relays (één per regel)","Relays (one per line)"],
+ volgModusL:["Knippert bij","Flashes for"],volg0:["Zaps naar deze lamp","Zaps to this lamp"],volg1:["Zaps naar andere accounts","Zaps to other accounts"],volg2:["Alle zaps op de relays","All zaps on the relays"],
+ volgPubL:["Welke accounts (npub of nostr-adres, één per regel, hoogstens 4)","Which accounts (npub or nostr address, one per line, at most 4)"],
+ bedankTekstL:["Tekst van het bedankje","Text of the thank-you note"],bedankTekstUit:["{sats} wordt het bedrag, {naam} de zapper.","{sats} becomes the amount, {naam} the zapper."],
+ eigenaarL:["Bedienen via nostr-DM vanaf deze npub","Control by nostr DM from this npub"],eigenaarUit:["feest, test, aan, uit, auto, stil, zoek. Leeg = uit.","party, zap, on, off, auto, stop, find. Empty = off."],
+ publiceerUit:["Na een nieuw profiel, lightning-adres of andere relays: publiceer, zodat nostr-apps het weten.","After a new profile, lightning address or other relays: publish, so nostr apps know."],
+ pBericht:["Bericht plaatsen","Post a note"],plaats:["Plaatsen op nostr","Post on nostr"],
+ berichtUit:["Een openbaar nostr-bericht vanaf het account van deze lamp, ondertekend door de lamp zelf.","A public nostr note from this lamp's account, signed by the lamp itself."],
+ vraagNotitie:["Dit bericht openbaar plaatsen vanaf %z? Dat kun je niet terugdraaien.","Post this note publicly from %z? It cannot be taken back."],geplaatst:["Geplaatst op %n relays","Posted to %n relays"],
+ pSleutel:["Sleutel","Key"],sleutelUit:["Heeft de lamp al een nostr-account? Importeer de nsec: de lamp krijgt dat npub. Een nieuwe sleutel geeft een nieuw npub; wie het oude bewaarde, zapt dan een account dat niemand leest. Je nsec wordt nergens getoond of bewaard, behalve in de lamp.","Does the lamp already have a nostr account? Import the nsec: the lamp gets that npub. A new key gives a new npub; whoever saved the old one then zaps an account nobody reads. Your nsec is never shown or kept anywhere except in the lamp."],
+ importeer:["Importeren","Import"],nieuweSleutel:["Nieuwe sleutel maken","Make a new key"],
+ vraagNsec:["De sleutel van %z vervangen? Het npub verandert.","Replace the key of %z? The npub changes."],vraagNieuweSleutel:["Een nieuwe sleutel voor %z? Het huidige npub vervalt.","A new key for %z? The current npub is gone."],
+ sleutelGedaan:["Sleutel vervangen. Publiceer het profiel opnieuw.","Key replaced. Publish the profile again."],
+ versieRegel:["Zapper control %v","Zapper control %v"],zoekUpdates:["Zoek naar updates","Look for updates"],
+ updNieuwst:["Je hebt de nieuwste versie (%v).","You have the newest version (%v)."],updRepo:["Deze Zapper control draait uit de broncode; bijwerken gaat daar (git pull).","This Zapper control runs from the source; update it there (git pull)."],
+ updUit:["Zapper control %n is uit.","Zapper control %n is out."],updKanaal:["Het updatekanaal is nu niet bereikbaar.","The update channel cannot be reached right now."],pProfiel:["Profiel en meldingen","Profile and alerts"],profielNaam:["Profielnaam","Profile name"],test:["Test","Test"],
  pActies:["Acties","Actions"],pGegevens:["Gegevens","Details"],pLog:["Logboek van deze Zapper","Event log of this Zapper"],openLamp:["Webinterface","Web interface"],opslaan:["Opslaan","Save"],
  offline:["Offline","Offline"],laatstGezien:["laatst gezien %t","last seen %t"],vergeet:["Vergeten","Forget"],geenToegang:["Geen toegang","No access"],
  fouteWw:["Verkeerd wachtwoord","Wrong password"],wwStandaard:["Wachtwoord: Bitcoin21","Password: Bitcoin21"],wwNodig:["Wachtwoord nodig","Password needed"],
@@ -1449,6 +1502,7 @@ function tel(){const n=gekozen().length,m=lampen.filter(l=>l.toegang).length;
  $('zwTekst').textContent=t('zwGekozen',{n});$('zwevend').classList.toggle('zichtbaar',n>0&&!zichtbaar($('acties')));
  document.querySelectorAll('.lamp').forEach(k=>{const c=k.querySelector('[data-kies]');k.classList.toggle('gekozen',!!(c&&c.checked))})}
 function toon(d){
+ if(d.control)$('versieTekst').textContent=t('versieRegel',{v:d.control.huidig||''});
  laatste=d;geladen=true;lampen=d.lampen||[];versie=d.versie||'';
  const on=lampen.filter(l=>l.online),achter=lampen.filter(loopAchter).length,off=lampen.length-on.length;
  $('tOnline').textContent=lampen.length?`${on.length}/${lampen.length}`:'0';
@@ -1548,7 +1602,15 @@ async function netten(){try{const d=await(await fetch('/netten')).json();$('nett
 
 // ---- the settings panel of one Zapper
 let paneelIp=null,paneelData=null,paneelOrigineel={};
-function lees(el){const v=el.value;return ('bool' in el.dataset)?v==='1':(el.type==='number'||'num' in el.dataset)?(v===''?null:Number(v)):v}
+const B32='qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+function b32pm(v){const G=[0x3b6a57b2,0x26508e6d,0x1ea119fa,0x3d4233dd,0x2a1462b3];let c=1;for(const x of v){const b=c>>25;c=((c&0x1ffffff)<<5)^x;for(let i=0;i<5;i++)if((b>>i)&1)c^=G[i]}return c}
+function npubVan(hex){if(!/^[0-9a-f]{64}$/i.test(hex))return hex;const d=[];let a=0,b=0;for(let i=0;i<64;i+=2){a=(a<<8)|parseInt(hex.substr(i,2),16);b+=8;while(b>=5){b-=5;d.push((a>>b)&31)}}
+ if(b)d.push((a<<(5-b))&31);const hrp=[...'npub'].map(c=>c.charCodeAt(0)),uit=[...hrp.map(c=>c>>5),0,...hrp.map(c=>c&31)];
+ const pm=b32pm([...uit,...d,0,0,0,0,0,0])^1;const cs=[0,1,2,3,4,5].map(i=>(pm>>(5*(5-i)))&31);return 'npub1'+[...d,...cs].map(x=>B32[x]).join('')}
+function lees(el){const v=el.value;
+ if('lijst' in el.dataset)return v.split(/[\s,]+/).filter(Boolean).join(',');
+ if('npubs' in el.dataset)return v.split(/[\s,]+/).filter(Boolean).join(',');
+ return ('bool' in el.dataset)?v==='1':(el.type==='number'||'num' in el.dataset)?(v===''?null:Number(v)):v}
 function vulPaneel(d){
  paneelData=d;const v=d.velden||{};
  $('pNaam').textContent=d.host;$('pSub').textContent=[d.board,(d.versie||'').split(' ')[0],paneelIp].filter(Boolean).join(' · ');
@@ -1557,7 +1619,11 @@ function vulPaneel(d){
  const opties=(d.deuntjes||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.naam)} (${(x.ms/1000).toFixed(1)} s)</option>`).join('');
  $('pDeuntje').innerHTML=opties;$('pZapDeuntje').innerHTML=`<option value="">${t('zapPiep')}</option>`+opties;
  document.querySelectorAll('[data-p]').forEach(el=>{const k=el.dataset.p,w=v[k];if(w===undefined)return;
-  el.value=('bool' in el.dataset)?(w?'1':'0'):(w??'')});
+  el.value=('bool' in el.dataset)?(w?'1':'0'):('lijst' in el.dataset)?String(w||'').split(',').filter(Boolean).join('\n')
+   :('npubs' in el.dataset)?String(w||'').split(',').filter(Boolean).map(npubVan).join('\n'):(w??'')});
+ $('pVolgVak').classList.toggle('verborgen',String(v.volgModus)!=='1');
+ $('pNpub').textContent=d.npub||'';$('pNpubLink').href=d.npub?'https://njump.me/'+d.npub:'#';
+ $('pNpubQr').src=d.npub?'http://'+paneelIp+'/api/qr':'';$('pNpubQr').classList.toggle('verborgen',!d.npub);
  document.querySelectorAll('.pBuzzer').forEach(e=>e.classList.toggle('verborgen',!d.buzzer));
  paneelOrigineel={};document.querySelectorAll('[data-p]').forEach(el=>paneelOrigineel[el.dataset.p]=lees(el));paneelOrigineel.__stand=$('pStand').value;
  const m=d.mijlpaal||{};
@@ -1573,7 +1639,7 @@ function vulPaneel(d){
   rij('herstartReden',d.herstartReden)+rij('temp',d.tempC!=null?Number(d.tempC).toFixed(1)+' °C':null)+rij('wifiGem',d.rssiGem!=null?d.rssiGem+' dBm':null)+
   rij('zaps',nf(d.zaps))+rij('sats',nf(d.sats))+rij('grootste',d.grootste!=null?nf(d.grootste)+' sats':null)+(d.npub?`<dt>npub</dt><dd>${esc(d.npub)}</dd>`:'');
  $('pLog').innerHTML=(d.log||[]).map(r=>`<div><span class="t">${r.tijd?new Date(r.tijd*1000).toLocaleTimeString(taal==='nl'?'nl-NL':'en-GB',{hour:'2-digit',minute:'2-digit'}):'+'+r.sinds+'s'}</span><span class="s">${esc(r.soort)}</span><span>${esc(r.tekst)}</span></div>`).join('')||`<span class="zacht">-</span>`;
- $('pOpen').href='http://'+paneelIp+'/';$('pVoet').textContent='';
+ $('pOpen').href='http://'+paneelIp+'/'+(/^[0-9a-f]{32}$/.test(d.sessie||'')?'#sessie='+d.sessie:'');$('pVoet').textContent='';
 }
 async function openPaneel(ip){
  paneelIp=ip;paneelData=null;$('pNaam').textContent=(lampen.find(l=>l.ip===ip)||{}).host||ip;$('pSub').textContent=t('laden');
@@ -1592,6 +1658,21 @@ $('pZapSpeel').onclick=()=>{const v=$('pZapDeuntje').value;
  post('/een',v?{ip:paneelIp,soort:'speel',deuntje:v}:{ip:paneelIp,soort:'testzap'}).catch(f=>alert(f.message))};
 $('pSpeel').onclick=()=>post('/een',{ip:paneelIp,soort:'speel',deuntje:$('pDeuntje').value}).catch(f=>alert(f.message));
 $('pStil').onclick=()=>post('/een',{ip:paneelIp,soort:'stil'}).catch(f=>alert(f.message));
+document.querySelector('[data-p="volgModus"]').addEventListener('change',e=>$('pVolgVak').classList.toggle('verborgen',e.target.value!=='1'));
+$('pNpubKopie').onclick=()=>{try{navigator.clipboard.writeText($('pNpub').textContent).then(()=>meld(t('gekopieerdNpub')))}catch(e){}};
+$('pNotitieKnop').onclick=async()=>{const tekst=$('pNotitie').value.trim();if(!tekst)return $('pNotitie').focus();
+ if(!confirm(t('vraagNotitie',{z:paneelData?paneelData.host:''})))return;$('pNotitieKnop').disabled=true;
+ try{const r=await post('/een',{ip:paneelIp,soort:'notitie',tekst});$('pNotitie').value='';meld(t('geplaatst',{n:r.relays??r.aantal??'?'}))}catch(f){alert(f.message)}finally{$('pNotitieKnop').disabled=false}};
+$('pNsecKnop').onclick=async()=>{const s=$('pNsec').value.trim();if(!s)return $('pNsec').focus();
+ if(!confirm(t('vraagNsec',{z:paneelData?paneelData.host:''})))return;
+ try{vulPaneel(await post('/een',{ip:paneelIp,soort:'nsec',sleutel:s}));meld(t('sleutelGedaan'))}catch(f){alert(f.message)}finally{$('pNsec').value=''}};
+$('pNieuweSleutel').onclick=async()=>{if(!confirm(t('vraagNieuweSleutel',{z:paneelData?paneelData.host:''})))return;
+ try{vulPaneel(await post('/een',{ip:paneelIp,soort:'nieuwesleutel'}));meld(t('sleutelGedaan'))}catch(f){alert(f.message)}};
+$('zoekUpdates').onclick=async()=>{$('updUitslag').textContent='…';
+ try{const r=await post('/controleer',{}),c=r.control||{};
+  $('updUitslag').textContent=c.nieuw?t('updUit',{n:c.nieuw})+' ':(r.inRepo?t('updRepo'):t('updNieuwst',{v:r.huidig}));
+  if(c.nieuw&&(c.kan||c.download)){$('controlLet').classList.remove('verborgen');$('controlTekst').textContent=t('controlNieuw',{n:c.nieuw,h:c.huidig});$('controlKnop').dataset.download=c.download||''}}
+ catch(f){$('updUitslag').textContent=t('updKanaal')}};
 $('pMeldTest').onclick=async()=>{try{await post('/een',{ip:paneelIp,soort:'meldtest'});meld(t('verstuurd'))}catch(f){alert(f.message)}};
 $('pStapNul').onclick=async()=>{if(!confirm(t('vraagStapNul')))return;try{vulPaneel(await post('/een',{ip:paneelIp,soort:'stapopnieuw'}))}catch(f){alert(f.message)}};
 $('pDoelNul').onclick=async()=>{if(!confirm(t('vraagDoelNul')))return;try{vulPaneel(await post('/een',{ip:paneelIp,soort:'doelopnieuw'}))}catch(f){alert(f.message)}};
@@ -1753,6 +1834,10 @@ def maak_handler(staat):
             lamp = staat["lampen"].get(d.get("ip"))
             if self.path == "/actie":
                 return self._actie(d)
+            if self.path == "/controleer":
+                # "look for updates": the channel again, now
+                online_manifest(staat, vers=True)
+                return self._json({"control": control_update(staat), "inRepo": IN_REPO, "huidig": CONTROL_VERSIE})
             if self.path == "/zelfupdate":
                 c = control_update(staat)
                 if not c["nieuw"] or not c["kan"]:
@@ -1828,6 +1913,29 @@ def maak_handler(staat):
                     if soort == "stil":
                         lamp.post("/api/lamp?doe=stil")
                         return self._json({"ok": True})
+                    if soort == "notitie":
+                        # a note from the lamp's own account; the lamp signs it, the key stays there
+                        tekst = str(d.get("tekst", "")).strip()
+                        if not tekst:
+                            return self._json({"fout": "empty note"}, 400)
+                        antwoord = lamp.post("/api/note", {"tekst": tekst}, tijd=30)
+                        staat["klus"].meld(f"{lamp.info['host']}: note posted")
+                        try:
+                            return self._json({"ok": True, **json.loads(antwoord)})
+                        except ValueError:
+                            return self._json({"ok": True})
+                    if soort == "nsec":
+                        # import a key: passed straight to the lamp, never logged or kept here
+                        sleutel = str(d.get("sleutel", "")).strip()
+                        lamp.api("/api/importkey", sleutel.encode(), "text/plain")
+                        staat["klus"].meld(f"{lamp.info['host']}: key imported")
+                        lamp.bekijk()
+                        return self._json(lamp.detail())
+                    if soort == "nieuwesleutel":
+                        lamp.post("/api/newkey")
+                        staat["klus"].meld(f"{lamp.info['host']}: new key made")
+                        lamp.bekijk()
+                        return self._json(lamp.detail())
                     if soort == "meldtest":
                         lamp.post("/api/meldtest")
                         return self._json({"ok": True})

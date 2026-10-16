@@ -1,39 +1,39 @@
 {
  "app": "zapper",
- "versie": "1.11",
+ "versie": "1.12.2",
  "datum": "2026-10-16",
  "notities": {
-  "nl": "• Zapper-scherm: een schone pagina voor een tv of tablet met elke lamp live, zijn nostr-profielfoto en naam, een QR om te zappen, zaps, sats, doel en de laatste zap, plus de blokhoogte.\n• Bedien een lamp met een nostr-DM vanaf je eigen npub: feest, test, aan, uit, auto, stil, zoek.\n• Alle Zappers: top zappers met hun foto, sats per dag, blokhoogte, QR per lamp, eenvoudige weergave en NIP-05 voor al je lampen.\n• Zapper control is er nu ook als gewoon programma voor Windows, Mac en Linux.",
-  "en": "• The Zapper screen (/scherm): a clean page for a TV or tablet with every lamp, lighting up live, its nostr picture and name, a QR to zap it, its lightning address, zaps, sats, goal and latest zap, and the block height. No settings on it; back and full screen in the corners.\n• Control a lamp by nostr DM from your own npub (old NIP-04 and private NIP-17 DMs): party, zap, on, off, auto, stop, find. Signature checked, once per message, at most two minutes old.\n• All Zappers: top zappers with their nostr pictures, sats per day for the last 30 days, the block height, a QR per lamp, a simple view, NIP-05 for all lamps on your own domain (with nostr.json), and a new block celebration and the DM owner in the bulk settings.\n• Settings, Carry settings over: one tap to copy them to your other Zappers.\n• The GitHub link in the lamp points to the public update channel."
+  "nl": "• Nieuwe Zapper flashen via USB rechtstreeks vanaf de website (Chrome of Edge op een computer), altijd met de nieuwste firmware.\n• Zapper control 2.6: nostr-instellingen per lamp (profiel, relays, volgen, bedankje), een bericht plaatsen, een nsec importeren, en zoeken naar updates.\n• Een gids met schermafdrukken voor Alle Zappers en het Zapper-scherm op tablet, iPad, pc, Mac of tv.",
+  "en": "• Flash a new board over USB straight from the download page (Chrome or Edge on a computer): one button per board, always with the newest firmware. Zapper control 2.5 has a button for it.\n• A brand new board no longer logs a storage error at its first start."
  },
  "firmware": {
   "Zapper REV A": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.11/zapper-reva-1.11-ota.bin",
-   "sha256": "af451f183bbf3af35918d66dc7181498b57495a19d2734fbb4e1a60322131104",
-   "grootte": 2508448
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.12.2/zapper-reva-1.12.2-ota.bin",
+   "sha256": "0c86089d9354bf15dc7816305b7caa3e211b85f0b110b5f2591d45c8701a2d16",
+   "grootte": 2525408
   },
   "ESP32-C6-Zero + MOSFET": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.11/lamp01-1.11-ota.bin",
-   "sha256": "3ee06e46912d7412b037d1b8f3bef801aee14b5bfc6dc1d752ab284f04f3e567",
-   "grootte": 2484272
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.12.2/lamp01-1.12.2-ota.bin",
+   "sha256": "decec4723c0e58828d82771a598c2e5ba8eb0e4d6e5e61a1c026eee8ed1045ca",
+   "grootte": 2501168
   }
  },
  "fabriek": {
   "Zapper REV A": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.11/zapper-reva-1.11-factory.bin",
-   "sha256": "a5bae6ba53061f2f003db3bae47c99f2a823e29e59b5bfb7f3e6014eb0f5c006",
-   "grootte": 2639520
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.12.2/zapper-reva-1.12.2-factory.bin",
+   "sha256": "d29f2ba33f8c08c8ab34dd6ad9419e8f6ff21e321b49045e91d5a4d1fa8974c9",
+   "grootte": 2656480
   },
   "ESP32-C6-Zero + MOSFET": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.11/lamp01-1.11-factory.bin",
-   "sha256": "54f9fab6110900925a1e12c73aaf7683d6dcad42c50968b77850b5ad06476b1d",
-   "grootte": 2549808
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.12.2/lamp01-1.12.2-factory.bin",
+   "sha256": "6711abc6f6b220a82f9e742daf66fdbd8467c549093ac6438e437828cdb8a827",
+   "grootte": 2566704
   }
  },
  "control": {
-  "versie": "2.4",
+  "versie": "2.6",
   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/control/zapper-control.py",
-  "sha256": "989e58e78cb77c329aba6efb8477431558bb53f72685e5c80a44e0ea2d84c944",
-  "grootte": 157982
+  "sha256": "1cfdaaf877b099d6e74915a09c77cd40e0b513bf64732e74c5db9837f5db784e",
+  "grootte": 170235
  }
 }
