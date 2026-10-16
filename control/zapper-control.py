@@ -42,7 +42,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # The version of this program itself. Raise it with every change that should
 # reach other people's copies; the release step publishes it.
-CONTROL_VERSIE = "2.6"
+CONTROL_VERSIE = "2.7"
 
 WORTEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Running from the source tree (firmware sources and git history), or as a
@@ -51,7 +51,7 @@ IN_REPO = os.path.isdir(os.path.join(WORTEL, "src")) and os.path.isdir(os.path.j
 # Packed as a program (Windows .exe, Mac app, Linux binary): it cannot replace
 # itself with a .py file, so a new version is a download from the page instead.
 ALS_PROGRAMMA = bool(getattr(sys, "frozen", False))
-DOWNLOADPAGINA = "https://zappercontrol.netlify.app/#start"
+DOWNLOADPAGINA = "https://jaccoelektro.github.io/zapper-updates/#start"
 # Online updates: the public channel and the release key's public half (the same
 # as RELEASE_PUBKEY in the firmware).
 UPDATE_BRON = "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/"
@@ -1099,7 +1099,7 @@ dialog::backdrop{background:rgba(6,2,14,.66);-webkit-backdrop-filter:blur(10px);
   <div><h1>Zapper control</h1><div class="status" id="status"><span class="stip" data-t="zoeken"></span></div></div></div>
  <div class="kopacties">
   <span class="taal"><button data-taal="nl">NL</button><button data-taal="en">EN</button></span>
-  <a class="knop klein grijs schermknop" href="https://zappercontrol.netlify.app/#flashen" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M7 7h10v5a5 5 0 0 1-10 0z"/><path d="M12 17v4"/></svg><span data-t="flashKnop"></span></a>
+  <a class="knop klein grijs schermknop" href="https://jaccoelektro.github.io/zapper-updates/#flashen" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M7 7h10v5a5 5 0 0 1-10 0z"/><path d="M12 17v4"/></svg><span data-t="flashKnop"></span></a>
   <button class="knop klein schermknop" id="schermKnop"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-t="schermKnop"></span></button>
   <button class="ikoon" id="zoek" data-t-title="zoekOpnieuw"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button></div>
 </header>

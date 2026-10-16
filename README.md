@@ -21,11 +21,11 @@ the firmware:
 
 ## Zapper control
 
-Download page and phone app: **https://zappercontrol.netlify.app** (served from this repository by
-Netlify). Or download [`control/zapper-control.py`](control/zapper-control.py) and run it with Python 3
+Download page and phone app: **https://jaccoelektro.github.io/zapper-updates/** (served from this repository by
+GitHub Pages). Or download [`control/zapper-control.py`](control/zapper-control.py) and run it with Python 3
 (no packages needed): `python3 zapper-control.py`. It opens a page in your browser with every
 ZAPPER on your network, updates them from here, and updates itself.
 
 ## Newest
 
-Version **1.12.2**, 2026-10-16.
+Version **1.12.3**, 2026-10-16.

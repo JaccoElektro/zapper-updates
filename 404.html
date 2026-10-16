@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Niet gevonden · Zapper</title>
-<link rel="icon" href="/beeld/logo.svg" type="image/svg+xml">
+
 <style>
 :root{--ink:#f6f1ff;--soft:#c9bfdc;--knop:linear-gradient(135deg,#9d00f9,#ed1f33 120%)}
 *{box-sizing:border-box}
@@ -20,12 +20,18 @@ a{display:inline-block;background:var(--knop);color:#fff;text-decoration:none;fo
 </head>
 <body>
 <main>
- <img src="/beeld/lamp-uit.svg" alt="">
+ <img id="lamp" alt="">
  <h1 id="kop">Deze lamp is uit</h1>
  <p id="tekst">Deze pagina bestaat niet (meer).</p>
- <a href="/" id="terug">Naar Zapper</a>
+ <a href="./" id="terug">Naar Zapper</a>
 </main>
 <script>
+// This page answers for any unknown address at any depth, so it finds the site's own
+// root itself: /zapper-updates/ on GitHub Pages, / on a domain of its own.
+const basis=location.hostname.endsWith('github.io')?'/'+location.pathname.split('/')[1]+'/':'/';
+document.getElementById('lamp').src=basis+'beeld/lamp-uit.svg';
+document.getElementById('terug').href=basis;
+const ico=document.createElement('link');ico.rel='icon';ico.type='image/svg+xml';ico.href=basis+'beeld/logo.svg';document.head.appendChild(ico);
 if(!(navigator.language||'').toLowerCase().startsWith('nl')){document.documentElement.lang='en';
  document.getElementById('kop').textContent='This lamp is off';
  document.getElementById('tekst').textContent='This page does not exist (any more).';
