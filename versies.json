@@ -1,5 +1,37 @@
 [
  {
+  "versie": "1.13.0",
+  "datum": "2026-10-17",
+  "notities": {
+   "nl": "• Zapper Control zit in elke lamp op /control: beheer meerdere lampen vanuit je browser, zonder installatie.\n• Volg de eigen lamp, maximaal vier andere accounts of alle zaps; de lampsleutel blijft behouden. Ongeldige invoer laat de instellingen intact.\n• Zapper Screen staat op /screen; de oude adressen blijven werken.\n• USB-flasher: één keer verbinden, daarna Firmware en Wifi als aparte tegels. Wifi zoeken werkt ook in setupstand en bij een onbereikbaar opgeslagen netwerk.\n• Betrouwbaardere USB-opdrachten en herstel na opnieuw aansluiten van dezelfde lamp. Handleiding en website bijgewerkt.",
+   "en": "• Zapper Control lives in every lamp at /control: manage several lamps in your browser, with nothing to install.\n• Follow the lamp itself, up to four other accounts or every zap, while keeping the lamp key. Invalid input leaves settings unchanged.\n• Zapper Screen lives at /screen; old addresses still work.\n• USB flasher: connect once, then use separate Firmware and Wi-Fi tiles. Network scanning works in setup mode and when the saved network is unreachable.\n• More reliable USB requests and recovery after reconnecting the same lamp. Manual and website updated."
+  },
+  "firmware": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/zapper-reva-1.13.0-ota.bin",
+    "sha256": "52f4912a6f6b64f3fd27212a5c9ad1346252e20501bf7562bd6841d591bdebf4",
+    "grootte": 2539696
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/lamp01-1.13.0-ota.bin",
+    "sha256": "8e30a40aa461238adbd6178995cf0092429b91300c592437dc66f551df1e6741",
+    "grootte": 2515440
+   }
+  },
+  "fabriek": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/zapper-reva-1.13.0-factory.bin",
+    "sha256": "3e472f1cdcb5d6bfa57b34cc2e13a5462b7f458e9abf55a7ded6f7187fbc1dd6",
+    "grootte": 2670768
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/lamp01-1.13.0-factory.bin",
+    "sha256": "55b89c6cb86333e3b97e481e9e5da9ec7892c2affcf96153a3058cb471a8a1dc",
+    "grootte": 2580976
+   }
+  }
+ },
+ {
   "versie": "1.12.3",
   "datum": "2026-10-16",
   "notities": {
