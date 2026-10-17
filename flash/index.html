@@ -292,8 +292,9 @@ function vgl(a,b){const x=String(a).match(/\d+/g)||[],y=String(b).match(/\d+/g)|
  for(let n=0;n<Math.max(x.length,y.length);n++){const d=(+x[n]||0)-(+y[n]||0);if(d)return d<0?-1:1}return 0}
 
 // ---- talking to the running firmware (115200 baud, "wifi status|scan|zet")
-const ser={lezer:null,buf:'',wacht:null,open:false,keten:Promise.resolve()};
+const ser={lezer:null,buf:'',wacht:null,open:false,keten:Promise.resolve(),sluiten:null};
 async function serOpen(){
+ if(ser.sluiten)await ser.sluiten;
  await poort.open({baudRate:115200});ser.open=true;
  // RTS low first, then DTR: never the combination that resets the chip
  try{await poort.setSignals({requestToSend:false})}catch(e){}try{await poort.setSignals({dataTerminalReady:false})}catch(e){}
@@ -304,11 +305,16 @@ async function serLees(lezer){const dec=new TextDecoder();
    if(r.startsWith('@wifi ')&&ser.wacht){try{const v=JSON.parse(r.slice(6));if(ser.wacht.past(v))ser.wacht.ok(v)}catch(e){ser.wacht?.mis(new Error('invalid USB reply'))}}}}}
  catch(e){}finally{if(ser.lezer===lezer){ser.lezer=null;ser.open=false;ser.wacht?.mis(new Error(t('geenAntwoord')));
   try{lezer.releaseLock()}catch(e){}if(!bezig){render();wachtTerug()}}}}
-async function serSluit(){
- const l=ser.lezer,wasOpen=ser.open;ser.lezer=null;ser.open=false;ser.wacht?.mis(new Error(t('geenAntwoord')));
- if(l){try{await metLimiet(l.cancel(),2000,'cancel')}catch(e){}try{l.releaseLock()}catch(e){}}
- if(wasOpen||(poort&&(poort.readable||poort.writable))){try{await metLimiet(poort.close(),3000,'close')}catch(e){}}
- ser.open=false}
+function serSluit(){
+ // Timeout, retry and bootloader handoff must await the same complete close.
+ // Rejecting the pending request resumes its catch before cancel/close finish.
+ if(ser.sluiten)return ser.sluiten;
+ const p=poort,l=ser.lezer,wasOpen=ser.open;ser.lezer=null;ser.open=false;ser.wacht?.mis(new Error(t('geenAntwoord')));
+ ser.sluiten=(async()=>{
+  if(l){try{await metLimiet(l.cancel(),2000,'cancel')}catch(e){}try{l.releaseLock()}catch(e){}}
+  if(wasOpen||(p&&(p.readable||p.writable))){try{await metLimiet(p.close(),3000,'close')}catch(e){}}
+ })().finally(()=>{ser.sluiten=null});
+ return ser.sluiten}
 function serVraag(cmd,ms){
  // Replies have no request id: only one command may be in flight at a time.
  const p=ser.keten.catch(()=>{}).then(()=>new Promise((ok,mis)=>{
