@@ -1,5 +1,37 @@
 [
  {
+  "versie": "1.14.2",
+  "datum": "2026-10-17",
+  "notities": {
+   "nl": "Nieuw voor speciale momenten: Frysk folksliet (volledig), één compleet couplet met het herhaalde refrein, ongeveer 33 seconden. Kies het in Jukebox of als groepsfeestdeuntje. Werk alle deelnemende zoemers bij. De korte De âlde Friezen blijft de standaard; Stop onderbreekt direct.",
+   "en": "New for special occasions: Frysk folksliet (volledig), the complete melody of one verse and the repeated refrain, about 33 seconds. Select it in Jukebox or as the group-party tune. Update all participating buzzers. The short De âlde Friezen remains the default; Stop interrupts immediately."
+  },
+  "firmware": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.2/zapper-reva-1.14.2-ota.bin",
+    "sha256": "32ec001196204230380dbbbe92232fcf7a2f6ff2e9af598357d7be08cd21e0ca",
+    "grootte": 2574592
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.2/lamp01-1.14.2-ota.bin",
+    "sha256": "5be22b3c104aff051ba172eb90b08dfad18f70a0b04d3ef7c6fd4d7235e08a35",
+    "grootte": 2550160
+   }
+  },
+  "fabriek": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.2/zapper-reva-1.14.2-factory.bin",
+    "sha256": "242ab986290e2245d9a7f09626685e1cdf02b39496e13ebd976422e9c517adc5",
+    "grootte": 2705664
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.2/lamp01-1.14.2-factory.bin",
+    "sha256": "5542f69658ce47a72a1a85c5b37699edd512f42d407fb724597e232783f871cc",
+    "grootte": 2615696
+   }
+  }
+ },
+ {
   "versie": "1.14.1",
   "datum": "2026-10-17",
   "notities": {
