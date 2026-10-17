@@ -8,10 +8,10 @@
 <meta name="description" content="Een lamp die oplicht bij elke zap op nostr. Zapper Control en Zapper Screen zitten in elke lamp; nieuwe lampen flash je hier via USB.">
 <meta property="og:title" content="ZAPPER">
 <meta property="og:description" content="Elke zap licht op. Zapper Control en Zapper Screen in elke lamp, niets te installeren.">
-<meta property="og:image" content="https://jaccoelektro.github.io/zapper-updates/beeld/icon-512.png">
+<meta property="og:image" content="https://jaccoelektro.github.io/zapper-updates/beeld/zapper-behuizing-gesloten.jpg">
 <meta property="og:url" content="https://jaccoelektro.github.io/zapper-updates/">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="beeld/logo.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="beeld/apple-touch-icon.png">
@@ -78,6 +78,15 @@ h1 span{background:var(--brand);-webkit-background-clip:text;background-clip:tex
 .lamp img{position:relative;height:320px;width:auto;filter:drop-shadow(0 0 3px rgba(251,200,8,.85)) drop-shadow(0 0 22px rgba(255,127,0,.6)) drop-shadow(0 0 46px rgba(157,0,249,.55));animation:zap 9s ease-in-out infinite}
 @keyframes adem{50%{opacity:.55;transform:scale(.94)}}
 @keyframes zap{0%,82%,100%{opacity:1}84%,88%,92%{opacity:.25}86%,90%{opacity:1}}
+
+/* product photos */
+.productfotos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.productfotos figure{margin:0;overflow:hidden;border:1px solid var(--hair);border-radius:22px;background:var(--glass)}
+.productfotos a{display:block;line-height:0}
+.productfotos img{display:block;width:100%;height:clamp(220px,30vw,340px);object-fit:cover;transition:transform .25s}
+.productfotos a:hover img{transform:scale(1.025)}
+.productfotos figcaption{padding:14px 18px;color:var(--soft);font-size:14px}
+@media(max-width:700px){.productfotos{grid-template-columns:1fr}.productfotos img{height:auto;aspect-ratio:3/2;object-fit:cover}}
 
 /* sections */
 section{margin-bottom:64px}
@@ -206,7 +215,7 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
  <span class="taal"><button data-taal="nl">NL</button><button data-taal="en">EN</button></span>
 </div>
 
-<nav class="productnav" aria-label="ZAPPER"><a href="#start" data-t="navStart"></a><a href="#control">Control</a><a href="#screen">Screen</a><a href="https://jaccoelektro.github.io/zapper-updates/flash/">USB-flasher</a><a href="handleiding.pdf" data-t="handleiding"></a></nav>
+<nav class="productnav" aria-label="ZAPPER"><a href="#start" data-t="navStart"></a><a href="#zapper" data-t="fotoNav"></a><a href="#control">Control</a><a href="#screen">Screen</a><a href="https://jaccoelektro.github.io/zapper-updates/flash/">USB-flasher</a><a href="handleiding.pdf" data-t="handleiding"></a></nav>
 <div class="held">
  <div>
   <p class="tag" data-t="tag"></p>
@@ -217,6 +226,15 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
  </div>
  <div class="lamp" aria-hidden="true"><img src="beeld/lamp-aan.svg" alt=""></div>
 </div>
+
+<section id="zapper">
+ <h2 data-t="fotoKop"></h2>
+ <p class="sub" data-t="fotoSub"></p>
+ <div class="productfotos">
+  <figure><a href="beeld/zapper-behuizing-gesloten.jpg" target="_blank" rel="noopener" aria-label="ZAPPER foto: gesloten behuizing"><img src="beeld/zapper-behuizing-gesloten.jpg" width="1536" height="1024" loading="lazy" data-t-alt="fotoGeslotenAlt" alt=""></a><figcaption data-t="fotoGesloten"></figcaption></figure>
+  <figure><a href="beeld/zapper-pcb-open.jpg" target="_blank" rel="noopener" aria-label="ZAPPER foto: open behuizing"><img src="beeld/zapper-pcb-open.jpg" width="1448" height="1086" loading="lazy" data-t-alt="fotoOpenAlt" alt=""></a><figcaption data-t="fotoOpen"></figcaption></figure>
+ </div>
+</section>
 
 <section>
  <h2 data-t="drieKop"></h2>
@@ -316,6 +334,12 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
 <script>
 const T={
  navStart:["Aan de slag","Get started"],
+ fotoNav:["De ZAPPER","The ZAPPER"],
+ fotoKop:["Zo ziet de ZAPPER eruit","Meet the ZAPPER"],
+ fotoSub:["Een echte ZAPPER REV A, met de behuizing dicht en open.","A real ZAPPER REV A, with the case closed and open."],
+ fotoGesloten:["Gesloten behuizing","Closed case"],fotoOpen:["Binnenkant met REV A-print","Inside with REV A board"],
+ fotoGeslotenAlt:["Oranje ZAPPER-behuizing met gesloten deksel","Orange ZAPPER with its case closed"],
+ fotoOpenAlt:["Open oranje behuizing met paarse ZAPPER REV A-print","Open orange case with purple ZAPPER REV A board"],
  tag:["ZAPPER zap-lamp","ZAPPER zap lamp"],
  titel1:["Elke zap","Every zap"],titel2:["licht op.","lights up."],
  lead:["Een lamp die oplicht bij elke zap op nostr. Alles wat je nodig hebt zit in de lamp zelf: open hem in je browser en je beheert al je Zappers. Geen app, geen account, niets te installeren.","A lamp that lights up on every zap on nostr. Everything you need is in the lamp itself: open it in your browser and you manage all your Zappers. No app, no account, nothing to install."],
@@ -413,6 +437,7 @@ let toestel=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform===
 function teken(){
  document.documentElement.lang=taal;
  document.querySelectorAll('[data-t]').forEach(e=>{const v=T[e.dataset.t];if(v)e.textContent=v[i()]});
+ document.querySelectorAll('[data-t-alt]').forEach(e=>{const v=T[e.dataset.tAlt];if(v)e.alt=v[i()]});
  document.querySelectorAll('[data-taal]').forEach(b=>b.classList.toggle('actief',b.dataset.taal===taal));
  $('stStart').innerHTML=lijst(T.stStart);$('stControl').innerHTML=lijst(T.stControl);$('stScreen').innerHTML=lijst(T.stScreen);
  $('stToestel').innerHTML=lijst(T.toestel[toestel]);$('stFlash').innerHTML=lijst(T.stFlash);

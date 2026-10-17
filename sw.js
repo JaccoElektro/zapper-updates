@@ -1,7 +1,7 @@
 // The ZAPPER site: opens offline too. The page and its pictures come from the
 // cache at once and are refreshed in the background; the update list always
 // tries the network first, so the version shown is the newest one.
-const CACHE = 'zapper-app-v7';
+const CACHE = 'zapper-app-v8';
 const KERN = ['./', 'index.html', 'manifest.webmanifest', 'beeld/logo.svg', 'beeld/lamp-aan.svg', 'beeld/lamp-uit.svg',
   'beeld/icon-192.png', 'beeld/icon-512.png', 'beeld/apple-touch-icon.png', 'beeld/pubkey.txt'];
 
