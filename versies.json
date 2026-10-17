@@ -1,5 +1,37 @@
 [
  {
+  "versie": "1.15.0",
+  "datum": "2026-10-17",
+  "notities": {
+   "nl": "Eigen npub en Andere npub volgen zijn nu afzonderlijk aan of uit te zetten. Volgen staat standaard uit en vraagt alleen een openbare npub. Zaps op profiel, berichten en reacties tellen mee. Nieuwe instellingen bovenaan, bijgewerkte Control en handleiding.",
+   "en": "Own npub and Follow another npub now have independent on/off switches. Following defaults off and needs only a public npub. Profile, post and reply zaps count. Clearer settings, updated Control and manual."
+  },
+  "firmware": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.15.0/zapper-reva-1.15.0-ota.bin",
+    "sha256": "e4d2b47c0a394812ca81ee813ac6a0b38b12d696f191db7b26501241e3ff0d79",
+    "grootte": 2583520
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.15.0/lamp01-1.15.0-ota.bin",
+    "sha256": "b83b12631fc03354477d704517d3a181e40aaa39225c44e17fa18de7c19c4e31",
+    "grootte": 2559104
+   }
+  },
+  "fabriek": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.15.0/zapper-reva-1.15.0-factory.bin",
+    "sha256": "29fa6357513374427de4f83ef4b3b2006405f500f25f1962f0e751961cd32938",
+    "grootte": 2714592
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.15.0/lamp01-1.15.0-factory.bin",
+    "sha256": "292ca03238b916593cfa249d9c1e9fb38d3649c8be231d1859edd9057ac9d0e9",
+    "grootte": 2624640
+   }
+  }
+ },
+ {
   "versie": "1.14.2",
   "datum": "2026-10-17",
   "notities": {
