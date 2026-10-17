@@ -146,6 +146,10 @@ footer a{color:var(--soft)}
 .wat{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:16px 0 0}
 .wat div{padding:12px 14px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--hair);font-size:14px;color:var(--soft)}
 .wat b{display:block;color:var(--ink);margin-bottom:2px}
+.scanveld{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:end;margin-bottom:12px}
+.scanveld label{grid-column:1/-1;font-weight:650;color:var(--soft);font-size:14px}
+.scanveld input{min-width:0;min-height:44px;padding:10px 14px;border-radius:12px;border:1px solid var(--hair);background:rgba(0,0,0,.24);color:var(--ink);font:14px var(--mono)}
+#scanResultaat .wat{margin-top:16px}
 @media (max-width:700px){.beelden{grid-template-columns:1fr}.beelden .tel{max-width:280px;margin:0 auto}}
 .np .zapknop{background:linear-gradient(135deg,#ff7f00,#fbc808);color:#1a0b00}
 .np .zapknop:hover{filter:brightness(1.08);background:linear-gradient(135deg,#ff7f00,#fbc808)}
@@ -206,6 +210,7 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
   <p class="lead" data-t="lead"></p>
   <div class="knoppen">
    <a class="knop" href="#start"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span data-t="naarStart"></span></a>
+   <a class="knop licht" href="#scannen" data-t="naarScan"></a>
    <a class="knop licht" href="flash/" data-t="naarFlash"></a>
   </div>
   <p class="klein" id="versieRegel"></p>
@@ -240,6 +245,17 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
    <figure class="tel"><a href="beeld/gids-control-tel.webp" target="_blank"><img src="beeld/gids-control-tel.webp" alt="" loading="lazy" width="780" height="1760"></a><figcaption data-t="cOpTel"></figcaption></figure></div>
   <ol class="stappen" id="stControl"></ol>
   <div class="wat" id="watControl"></div></div>
+</section>
+
+<section id="scannen">
+ <h2 data-t="scanKop"></h2>
+ <p class="sub" data-t="scanSub"></p>
+ <div class="kaart">
+  <div class="scanveld"><label for="scanAdres" data-t="scanAdres"></label>
+   <input id="scanAdres" value="zapper01.local" autocomplete="url" spellcheck="false">
+   <button class="knop" onclick="scanZappers()" data-t="scanKnop"></button></div>
+  <p class="hint" data-t="scanUitleg"></p><div id="scanResultaat" aria-live="polite"></div>
+ </div>
 </section>
 
 <section id="screen">
@@ -302,7 +318,7 @@ const T={
  tag:["ZAPPER zap-lamp","ZAPPER zap lamp"],
  titel1:["Elke zap","Every zap"],titel2:["licht op.","lights up."],
  lead:["Een lamp die oplicht bij elke zap op nostr. Alles wat je nodig hebt zit in de lamp zelf: open hem in je browser en je beheert al je Zappers. Geen app, geen account, niets te installeren.","A lamp that lights up on every zap on nostr. Everything you need is in the lamp itself: open it in your browser and you manage all your Zappers. No app, no account, nothing to install."],
- naarStart:["Zo begin je","Get started"],naarFlash:["Nieuwe Zapper flashen","Flash a new Zapper"],
+ naarStart:["Zo begin je","Get started"],naarScan:["Zappers zoeken","Find Zappers"],naarFlash:["Nieuwe Zapper flashen","Flash a new Zapper"],
  versieRegel:["Firmware %v · gratis · ondertekend zoals nostr","Firmware %v · free · signed like nostr"],
  drieKop:["Drie dingen. Meer niet.","Three things. Nothing more."],
  drieSub:["Twee zitten in elke ZAPPER, de derde staat op deze site.","Two are in every ZAPPER, the third is on this site."],
@@ -320,6 +336,15 @@ const T={
   ["<b>Inloggen.</b> Het wachtwoord is <b>Bitcoin21</b>. Kies daarna je eigen wachtwoord; het overzicht herinnert je eraan.","<b>Log in.</b> The password is <b>Bitcoin21</b>. Then choose your own password; the overview reminds you."],
   ["<b>Zappen.</b> Vul je lightning-adres in en publiceer het profiel (Overzicht, Aan de slag). Zap de lamp: hij licht op.","<b>Zap.</b> Fill in your lightning address and publish the profile (Overview, Getting started). Zap the lamp: it lights up."]],
  cSub:["Open één lamp en je ziet ze allemaal. Op je computer, je tablet en je telefoon.","Open one lamp and you see them all. On your computer, your tablet and your phone."],
+ scanKop:["Zappers op je netwerk zoeken","Find Zappers on your network"],
+ scanSub:["Gebruik deze pagina op een computer die met dezelfde wifi is verbonden als je lampen.","Use this page on a computer connected to the same Wi-Fi as your lamps."],
+ scanAdres:["Adres van één Zapper op je netwerk","Address of one Zapper on your network"],
+ scanKnop:["Zoek Zappers","Find Zappers"],
+ scanUitleg:["Chrome of Edge vraagt toestemming voor toegang tot je lokale netwerk. Voer het adres van één lamp in; die zoekt de andere Zappers via mDNS. Er wordt niets veranderd aan je lampen.","Chrome or Edge will ask permission to access your local network. Enter one lamp's address; it finds the other Zappers through mDNS. Nothing is changed on your lamps."],
+ scanBezig:["Zoeken…","Searching…"],
+ scanFout:["Niet gelukt. Controleer het adres, dezelfde wifi en de toestemming voor lokaal netwerk in Chrome of Edge (versie 142 of hoger).","Could not connect. Check the address, same Wi-Fi, and Local Network permission in Chrome or Edge (version 142 or newer)."],
+ scanGeen:["Geen andere Zappers gevonden.","No other Zappers found."],
+ scanEigen:["Startlamp","Starting lamp"],
  cOpPc:["Zapper Control op een computer","Zapper Control on a computer"],cOpTel:["En op een telefoon","And on a phone"],
  stControl:[["Open een lamp in je browser en tik op <b>Zapper Control</b> in het menu, of op het icoon met de twee lampjes <img class=\"inline-icoon\" src=\"beeld/gids-icoon.webp\" alt=\"\"> rechtsboven.","Open a lamp in your browser and tap <b>Zapper Control</b> in the menu, or the icon with the two lamps <img class=\"inline-icoon\" src=\"beeld/gids-icoon.webp\" alt=\"\"> at the top right."],
   ["Alle Zappers in je wifi verschijnen vanzelf. Heeft een lamp een ander wachtwoord, dan vraagt zijn kaart het één keer.","Every Zapper on your Wi-Fi shows up by itself. Does a lamp have a different password? Its card asks for it once."],
@@ -402,6 +427,24 @@ function teken(){
   $('versieRegel').textContent=T.versieRegel[i()].replace('%v',manifest.versie||'');
  }
  tekenEerder();
+}
+function scanBasisAdres(){
+ let h=$('scanAdres').value.trim().replace(/^https?:\/\//i,'').replace(/\/$/,'');
+ if(!h||h.includes('/')||h.includes('@')||h.includes(':'))throw new Error('address');
+ if(/^[a-z0-9-]+\.local$/i.test(h))return 'http://'+h;
+ const p=h.split('.').map(Number);
+ if(p.length!==4||p.some(n=>!Number.isInteger(n)||n<0||n>255)||
+    !(p[0]===10||p[0]===192&&p[1]===168||p[0]===172&&p[1]>=16&&p[1]<=31))throw new Error('address');
+ return 'http://'+h;
+}
+async function scanZappers(){
+ const box=$('scanResultaat');box.textContent=T.scanBezig[i()];
+ try{
+  const url=scanBasisAdres()+'/api/ontdek',ac=new AbortController(),tm=setTimeout(()=>ac.abort(),12000);
+  let r;try{r=await fetch(url,{mode:'cors',cache:'no-store',targetAddressSpace:'local',signal:ac.signal})}finally{clearTimeout(tm)}
+  if(!r.ok)throw new Error('http');const d=await r.json(),buren=d.buren||[],found=[{host:d.ik,ip:d.ipIk,naam:'',versie:'',own:true},...buren];
+  box.innerHTML=`<div class="wat">${found.map(l=>`<div><b>${l.own?esc(T.scanEigen[i()]):esc(l.naam||l.host||l.ip)}</b>${esc(l.host||'')} · ${esc(l.ip||'')} · ${esc(l.versie||'')}<br><a class="pil paars" href="http://${encodeURIComponent(l.ip||l.host)}/control" target="_blank" rel="noopener">Zapper Control</a></div>`).join('')}</div>`+(!buren.length?`<p style="margin-top:14px">${esc(T.scanGeen[i()])}</p>`:'');
+ }catch(e){box.textContent=T.scanFout[i()]}
 }
 // ---- what changed in earlier versions (the files themselves go through the USB flasher)
 function tekenEerder(){if(!versies||!manifest)return;const oud=versies.filter(x=>x.versie!==manifest.versie).slice(0,8);

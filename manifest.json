@@ -1,33 +1,33 @@
 {
  "app": "zapper",
- "versie": "1.13.0",
+ "versie": "1.14.0",
  "datum": "2026-10-17",
  "notities": {
-  "nl": "• Zapper Control zit in elke lamp op /control: beheer meerdere lampen vanuit je browser, zonder installatie.\n• Volg de eigen lamp, maximaal vier andere accounts of alle zaps; de lampsleutel blijft behouden. Ongeldige invoer laat de instellingen intact.\n• Zapper Screen staat op /screen; de oude adressen blijven werken.\n• USB-flasher: één keer verbinden, daarna Firmware en Wifi als aparte tegels. Wifi zoeken werkt ook in setupstand en bij een onbereikbaar opgeslagen netwerk.\n• Betrouwbaardere USB-opdrachten en herstel na opnieuw aansluiten van dezelfde lamp. Handleiding en website bijgewerkt.",
-  "en": "• Zapper Control lives in every lamp at /control: manage several lamps in your browser, with nothing to install.\n• Follow the lamp itself, up to four other accounts or every zap, while keeping the lamp key. Invalid input leaves settings unchanged.\n• Zapper Screen lives at /screen; old addresses still work.\n• USB flasher: connect once, then use separate Firmware and Wi-Fi tiles. Network scanning works in setup mode and when the saved network is unreachable.\n• More reliable USB requests and recovery after reconnecting the same lamp. Manual and website updated."
+  "nl": "Zapper Control heeft nu een Jukebox: speel een gekozen deuntje, laat de lampen knipperen of stop alle zoemers tegelijk. Stel voor 2 tot 32 lampen een gezamenlijk feest in met aan/uit, een minimum in sats en een feestdeuntje. Een zap boven het ingestelde bedrag naar een deelnemende lamp laat de hele groep vieren. De lampen geven elkaar daarvoor een tijdelijk, ondertekend Nostr-bericht door; volginstellingen en eigen sleutels blijven apart. De downloadpagina kan in Chrome of Edge 142+ na toestemming Zappers op je lokale netwerk zoeken. Vul het adres van één lamp in; die vindt de andere via mDNS.",
+  "en": "• Zapper Control adds a Jukebox button: play a selected tune, flash, or stop the buzzers on all reachable lamps in parallel.\n• A group party can be switched on or off for 2–32 selected lamps, with a zap threshold and shared tune. A qualifying zap to a participating lamp sends a short-lived signed Nostr event; group membership is checked by every receiver, and normal follow settings remain unchanged.\n• The HTTPS download page can discover local Zappers in Chrome or Edge after local-network permission is granted. Enter one lamp address to start mDNS discovery; the endpoint is read-only.\n• Control can already set each lamp to follow other npubs independently of its own key."
  },
  "firmware": {
   "Zapper REV A": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/zapper-reva-1.13.0-ota.bin",
-   "sha256": "52f4912a6f6b64f3fd27212a5c9ad1346252e20501bf7562bd6841d591bdebf4",
-   "grootte": 2539696
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/zapper-reva-1.14.0-ota.bin",
+   "sha256": "3a73b5e67f813855ffb74487e40bce76d71d1c4725492c9d1e6ad9dfd3c95f91",
+   "grootte": 2556240
   },
   "ESP32-C6-Zero + MOSFET": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/lamp01-1.13.0-ota.bin",
-   "sha256": "8e30a40aa461238adbd6178995cf0092429b91300c592437dc66f551df1e6741",
-   "grootte": 2515440
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/lamp01-1.14.0-ota.bin",
+   "sha256": "b2850dae2400f83d31cf3a62a76a0bd122339a04de497fd48d316a0f03b220fb",
+   "grootte": 2531824
   }
  },
  "fabriek": {
   "Zapper REV A": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/zapper-reva-1.13.0-factory.bin",
-   "sha256": "3e472f1cdcb5d6bfa57b34cc2e13a5462b7f458e9abf55a7ded6f7187fbc1dd6",
-   "grootte": 2670768
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/zapper-reva-1.14.0-factory.bin",
+   "sha256": "eec328255afbb380d9b62c056d38f3be873155e876ef9f4c8a844791be64fbd0",
+   "grootte": 2687312
   },
   "ESP32-C6-Zero + MOSFET": {
-   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.13.0/lamp01-1.13.0-factory.bin",
-   "sha256": "55b89c6cb86333e3b97e481e9e5da9ec7892c2affcf96153a3058cb471a8a1dc",
-   "grootte": 2580976
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/lamp01-1.14.0-factory.bin",
+   "sha256": "9c9ecd1f18e2f23b7b8f0b481a5ce508bf57a0292a01229d928143e3b20c160f",
+   "grootte": 2597360
   }
  }
 }
