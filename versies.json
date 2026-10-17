@@ -1,5 +1,37 @@
 [
  {
+  "versie": "1.14.1",
+  "datum": "2026-10-17",
+  "notities": {
+   "nl": "Zapper Screen heeft nu zichtbare NL- en EN-knoppen. Wissel direct tussen Nederlands en Engels; je keuze blijft in deze browser bewaard. De titel blijft op telefoons vrij van de hoekknoppen. Inclusief de USB-flasherreparatie voor nieuwe lampen.",
+   "en": "Zapper Screen now has visible NL and EN buttons. Switch instantly between Dutch and English; this browser remembers your choice. On phones, the heading stays clear of the corner controls. Includes the USB flasher fix for new lamps."
+  },
+  "firmware": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.1/zapper-reva-1.14.1-ota.bin",
+    "sha256": "7ed6c7c5f8131e73cf4d482f8c1a7efade9c314530cd73770ce1f158abdecd41",
+    "grootte": 2574144
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.1/lamp01-1.14.1-ota.bin",
+    "sha256": "3d3674035efadc2cf4469bbd9183eb4cb7ed2e6221d8495574af90a581c18b96",
+    "grootte": 2549712
+   }
+  },
+  "fabriek": {
+   "Zapper REV A": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.1/zapper-reva-1.14.1-factory.bin",
+    "sha256": "1466ceebac78658dfc043c752abb747695e2ad3afec60820a18404f8d401bbc2",
+    "grootte": 2705216
+   },
+   "ESP32-C6-Zero + MOSFET": {
+    "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.1/lamp01-1.14.1-factory.bin",
+    "sha256": "682e74b3d78b5ce44de61fe4fb0d3e69decc9f7960d0e4cf33bc72da3624675c",
+    "grootte": 2615248
+   }
+  }
+ },
+ {
   "versie": "1.14.0",
   "datum": "2026-10-17",
   "notities": {
