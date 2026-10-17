@@ -252,7 +252,7 @@ const BORD={'zapper-reva':'Zapper REV A','lamp01':'ESP32-C6-Zero + MOSFET'};
 const VAN_FIRMWARE={'Zapper REV A':'zapper-reva','ZapLamp REV A':'zapper-reva','ESP32-C6-Zero + MOSFET':'lamp01'};
 const RELEASE_PUBKEY='5e3ccae16b53c902c312cc4af9290575915f569fde9439f5a6cc2d7670d7d543';
 
-let poort=null,transport=null,loader=null,apparaat=null,versies=[],manifest=null,manifestOk=false,bord='zapper-reva',paneel=null,bezig=false;
+let poort=null,transport=null,loader=null,apparaat=null,versies=[],manifest=null,manifestOk=false,bord='zapper-reva',bordBewust=false,paneel=null,bezig=false;
 let netwerken=null,gekozenNet=null,wachter=null,stoppen=false;
 
 // ---- the signature on the update list (BIP340, as nostr and the lamp)
@@ -384,8 +384,8 @@ async function verbind(){
    apparaat={naam:'zapper-'+mac.replace(/:/g,'').slice(-4).toLowerCase(),mac:mac.toLowerCase(),chip,herkend:herken(tabel),leeg:!tabel.length,firmware:null,wifi:null};
    if(apparaat.herkend)await espSluit(true);  // older ZAPPER firmware: let it run again
   }
-  if(apparaat.herkend)bord=apparaat.herkend;
-  $('wis').checked=!apparaat.herkend;
+  bordBewust=!!apparaat.herkend;if(apparaat.herkend)bord=apparaat.herkend;
+  $('wis').checked=false; // erasing always needs an explicit choice
   // the obvious next step opens by itself
   paneel=!apparaat.firmware||!isNieuwst()?'firmware':(apparaat.wifi&&!apparaat.wifi.verbonden?'wifi':null);zet('fStatus','');zet('wStatus','');
  }catch(e){console.error('verbinden',e);await serSluit();await espSluit(false);apparaat=null;toonBeginFout(t('fout',{f:e.message||e})+' '+t('bootTip'))}
@@ -453,14 +453,14 @@ function renderFirmware(){
  if(!manifest||!apparaat)return;
  tekenVersies();
  const v=$('versie').value||manifest.versie,wis=$('wis').checked,kanBij=apparaat.herkend===bord;
- if(!kanBij&&!wis)$('wis').checked=true;
+
  const w=$('wis').checked;
  $('fKop').textContent=w&&apparaat.herkend?t('fKopWis',{v}):!apparaat.herkend?t('fKopNieuw',{v}):apparaat.firmware===v?t('fKopOpnieuw',{v}):t('fKopBij',{v});
  $('fUitleg').textContent=w&&apparaat.herkend?t('fUitlegWis'):!apparaat.herkend?t('fUitlegNieuw'):t('fUitlegBij');
  $('flash').textContent=w&&apparaat.herkend?t('fKnopWis'):!apparaat.herkend?t('fKnopNieuw'):apparaat.firmware===v?t('fKnopOpnieuw'):t('fKnopBij');
  const nieuwste=v===manifest.versie;$('fChip').className='chip '+(nieuwste&&manifestOk?'groen':'');$('fChip').textContent=nieuwste?(manifestOk?t('ondertekend'):''):t('ouder');
  document.querySelectorAll('[data-bord]').forEach(b=>b.classList.toggle('actief',b.dataset.bord===bord));
- $('flash').disabled=bezig;
+ $('flash').disabled=bezig||(!kanBij&&!w)||(!apparaat.herkend&&!bordBewust);
 }
 function tekenVersies(){
  const sel=$('versie'),voor=sel.value;
@@ -474,7 +474,10 @@ async function flash(){
  if(bezig||!apparaat)return;
  await stopWachter();
  const versie=$('versie').value,v=versies.find(x=>x.versie===versie);if(!v)return;
- const wis=$('wis').checked,bron=((wis?v.fabriek:v.firmware)||{})[BORD[bord]];
+ const wis=$('wis').checked;
+ if(!wis&&apparaat.herkend!==bord){zet('fStatus',t('bijNee'),true);return}
+ if(wis&&!confirm(taal==='nl'?'Alles wissen? Identiteit, sleutels en instellingen gaan verloren.':'Erase everything? Identity, keys and settings will be lost.'))return;
+ const bron=((wis?v.fabriek:v.firmware)||{})[BORD[bord]];
  if(!bron){zet('fStatus',t('fout',{f:'no image'}),true);return}
  bezig=true;render();$('balk').classList.remove('verborgen');$('balkVul').style.width='0%';
  try{
@@ -492,6 +495,7 @@ async function flash(){
   if(wis)bestanden=[{data,address:0}];
   else{if(herken(tabel)!==bord)throw new Error(t('bijNee'));
    const app=tabel.find(p=>p.type===0&&p.sub===0x10),od=tabel.find(p=>p.type===1&&p.sub===0);
+   if(!od||od.grootte!==0x2000||tabel.some(p=>p!==app&&p!==od&&(app.adres<p.adres+p.grootte&&p.adres<app.adres+data.length||od.adres<p.adres+p.grootte&&p.adres<od.adres+od.grootte)))throw new Error('overlapping or invalid partition table');
    if(data.length>app.grootte)throw new Error('image larger than the app partition');
    // the app in the first app slot, and the boot choice cleared so it starts that one
    bestanden=[{data,address:app.adres},{data:new Uint8Array(od.grootte).fill(0xff),address:od.adres}]}
@@ -506,11 +510,12 @@ async function flash(){
   // wait until the new firmware answers on USB
   const st=await wachtOpFirmware(45000,mac);
   if(st){apparaat={...apparaat,naam:st.host,mac,firmware:st.versie.split(' ')[0],herkend:VAN_FIRMWARE[st.board]||bord,wifi:st,leeg:false};
-   let h='<span class="goed">'+esc(t('geflasht',{n:st.host,v:versie}))+'</span>';
+   if(st.versie.split(' ')[0]!==versie)throw new Error(taal==='nl'?'De lamp meldt een andere firmwareversie. Controleer en probeer opnieuw.':'The lamp reports a different firmware version. Check and retry.');
+   let h='<span class="goed">'+esc(t('geflasht',{n:st.host,v:st.versie.split(' ')[0]}))+'</span>';
    if(!st.verbonden)h+='<div style="margin-top:12px"><button class="knop" id="naarWifi">'+esc(t('naarWifi'))+'</button></div>';
    zet('fStatus',h,false,true);
-  }else{apparaat={...apparaat,firmware:versie,herkend:bord,leeg:false,wifi:null};
-   zet('fStatus','<span class="goed">'+esc(t('geflashtTerug',{n:apparaat.naam}))+'</span><div class="wacht" style="margin-top:12px"><span class="draai"></span>'+esc(t('wWachten',{n:apparaat.naam}))+'</div>',false,true)}
+  }else{apparaat={...apparaat,herkend:bord,leeg:false,wifi:null};
+   zet('fStatus','<span>'+esc(taal==='nl'?'Geschreven; draaiende firmware nog niet bevestigd.':'Written; running firmware not yet confirmed.')+'</span><div class="wacht" style="margin-top:12px"><span class="draai"></span>'+esc(t('wWachten',{n:apparaat.naam}))+'</div>',false,true)}
   $('balk').classList.add('verborgen');
  }catch(e){console.error('flashen',e);zet('fStatus',t('fout',{f:e.message||e})+' '+t('bootTip'),true)}
  finally{bezig=false;render();const k=$('naarWifi');if(k)k.onclick=()=>open('wifi');if(!ser.open&&apparaat&&apparaat.firmware)wachtTerug()}
@@ -575,7 +580,7 @@ $('verbind').onclick=verbind;$('ander').onclick=verbind;
 $('tFirmware').onclick=()=>open('firmware');$('tWifi').onclick=()=>open('wifi');
 $('flash').onclick=flash;$('wBewaar').onclick=wBewaar;
 $('versie').onchange=renderFirmware;$('wis').onchange=renderFirmware;
-document.querySelectorAll('[data-bord]').forEach(b=>b.onclick=()=>{if(bezig)return;bord=b.dataset.bord;renderFirmware()});
+document.querySelectorAll('[data-bord]').forEach(b=>b.onclick=()=>{if(bezig)return;bord=b.dataset.bord;bordBewust=true;renderFirmware()});
 $('netten').onclick=e=>{const b=e.target.closest('button');if(!b||bezig)return;if(b.dataset.zoek){zoekNetten();return}
  gekozenNet=b.dataset.ssid;zet('wStatus','');renderWifi();setTimeout(()=>(gekozenNet==='__ander'?$('wSsidHand'):$('wPass')).focus(),30)};
 $('oog').onclick=()=>{$('wPass').type=$('wPass').type==='password'?'text':'password';render()};

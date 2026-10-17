@@ -3,31 +3,31 @@
   "versie": "1.14.0",
   "datum": "2026-10-17",
   "notities": {
-   "nl": "Zapper Control heeft nu een Jukebox: speel een gekozen deuntje, laat de lampen knipperen of stop alle zoemers tegelijk. Stel voor 2 tot 32 lampen een gezamenlijk feest in met aan/uit, een minimum in sats en een feestdeuntje. Een zap boven het ingestelde bedrag naar een deelnemende lamp laat de hele groep vieren. De lampen geven elkaar daarvoor een tijdelijk, ondertekend Nostr-bericht door; volginstellingen en eigen sleutels blijven apart. De downloadpagina kan in Chrome of Edge 142+ na toestemming Zappers op je lokale netwerk zoeken. Vul het adres van één lamp in; die vindt de andere via mDNS.",
-   "en": "• Zapper Control adds a Jukebox button: play a selected tune, flash, or stop the buzzers on all reachable lamps in parallel.\n• A group party can be switched on or off for 2–32 selected lamps, with a zap threshold and shared tune. A qualifying zap to a participating lamp sends a short-lived signed Nostr event; group membership is checked by every receiver, and normal follow settings remain unchanged.\n• The HTTPS download page can discover local Zappers in Chrome or Edge after local-network permission is granted. Enter one lamp address to start mDNS discovery; the endpoint is read-only.\n• Control can already set each lamp to follow other npubs independently of its own key."
+   "nl": "Groepsfeest werkt met 2 tot 32 lampen en controleert ontvanger, tijd, herhaling en nachtrust. Control toont bereikbaarheid, gedeelde instellingen en resultaten per lamp; Jukebox meldt geaccepteerd, overgeslagen of mislukt. Duidelijkere mobiele menu’s en USB-herstel met behoud van identiteit. Actuele handleiding en voorbeelden.",
+   "en": "Group party supports 2 to 32 lamps with recipient, freshness, replay and quiet-hours checks. Control shows reachability, shared settings and per-lamp results; Jukebox distinguishes accepted, skipped and failed actions. Clearer mobile menus and USB recovery that preserves identity. Updated manual and examples."
   },
   "firmware": {
    "Zapper REV A": {
     "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/zapper-reva-1.14.0-ota.bin",
-    "sha256": "3a73b5e67f813855ffb74487e40bce76d71d1c4725492c9d1e6ad9dfd3c95f91",
-    "grootte": 2556240
+    "sha256": "ea3c9611c2be87529cebc89598958cd2ccc7c52740040fe2c2b56fee5fce3e25",
+    "grootte": 2572960
    },
    "ESP32-C6-Zero + MOSFET": {
     "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/lamp01-1.14.0-ota.bin",
-    "sha256": "b2850dae2400f83d31cf3a62a76a0bd122339a04de497fd48d316a0f03b220fb",
-    "grootte": 2531824
+    "sha256": "d069e6de7f62c3222e7717975c32e465bc1a61b2aba159e9ffc19ea0cadbf6ab",
+    "grootte": 2548528
    }
   },
   "fabriek": {
    "Zapper REV A": {
     "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/zapper-reva-1.14.0-factory.bin",
-    "sha256": "eec328255afbb380d9b62c056d38f3be873155e876ef9f4c8a844791be64fbd0",
-    "grootte": 2687312
+    "sha256": "a3fa6141b25cf1d841d550be65cc4ca8d566578a4dd72f2df3a7abb3a81a54e8",
+    "grootte": 2704032
    },
    "ESP32-C6-Zero + MOSFET": {
     "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/firmware/1.14.0/lamp01-1.14.0-factory.bin",
-    "sha256": "9c9ecd1f18e2f23b7b8f0b481a5ce508bf57a0292a01229d928143e3b20c160f",
-    "grootte": 2597360
+    "sha256": "dd782f87358ee46887331867af9dda64b5184db743f2570c04d1ab85f0f6d540",
+    "grootte": 2614064
    }
   }
  },

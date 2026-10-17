@@ -193,6 +193,9 @@ footer a{color:var(--soft)}
 .knopje svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* the device steps follow on from step 2 */
 ol.stappen.verder{counter-reset:s 2;margin-top:16px}
+.productnav{display:flex;gap:8px 20px;flex-wrap:wrap;margin:10px 0 30px}.productnav a{display:inline-flex;align-items:center;min-height:44px;color:var(--soft);text-decoration:none}.kaart{box-shadow:none}.lamp::before{opacity:.45}
+.tel img{max-height:580px;object-fit:cover;object-position:top}.tel a{display:block}.tel{align-self:start}
+:focus-visible{outline:3px solid #f5b85d;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -203,16 +206,13 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
  <span class="taal"><button data-taal="nl">NL</button><button data-taal="en">EN</button></span>
 </div>
 
+<nav class="productnav" aria-label="ZAPPER"><a href="#start" data-t="navStart"></a><a href="#control">Control</a><a href="#screen">Screen</a><a href="flash/">USB-flasher</a><a href="handleiding.pdf" data-t="handleiding"></a></nav>
 <div class="held">
  <div>
   <p class="tag" data-t="tag"></p>
   <h1><span data-t="titel1"></span><br><span data-t="titel2"></span></h1>
   <p class="lead" data-t="lead"></p>
-  <div class="knoppen">
-   <a class="knop" href="#start"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span data-t="naarStart"></span></a>
-   <a class="knop licht" href="#scannen" data-t="naarScan"></a>
-   <a class="knop licht" href="flash/" data-t="naarFlash"></a>
-  </div>
+  <div class="knoppen"><a class="knop" href="#scannen" data-t="naarScan"></a><a class="knop licht" href="flash/" data-t="naarFlash"></a><a class="knop licht" href="handleiding.pdf" data-t="handleiding"></a></div>
   <p class="klein" id="versieRegel"></p>
  </div>
  <div class="lamp" aria-hidden="true"><img src="beeld/lamp-aan.svg" alt=""></div>
@@ -241,8 +241,8 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
  <h2>Zapper Control</h2>
  <p class="sub" data-t="cSub"></p>
  <div class="kaart">
-  <div class="beelden"><figure><a href="beeld/gids-control-pc.webp" target="_blank"><img src="beeld/gids-control-pc.webp" alt="" loading="lazy" width="1280" height="1000"></a><figcaption data-t="cOpPc"></figcaption></figure>
-   <figure class="tel"><a href="beeld/gids-control-tel.webp" target="_blank"><img src="beeld/gids-control-tel.webp" alt="" loading="lazy" width="780" height="1760"></a><figcaption data-t="cOpTel"></figcaption></figure></div>
+  <div class="beelden"><figure><a href="beeld/gids-control-pc.webp" target="_blank"><img src="beeld/gids-control-pc.webp" alt="" loading="lazy" width="1280" height="1100"></a><figcaption data-t="cOpPc"></figcaption></figure>
+   <figure class="tel"><a href="beeld/gids-control-tel.webp" target="_blank"><img src="beeld/gids-control-tel.webp" alt="" loading="lazy" width="390" height="929"></a><figcaption data-t="cOpTel"></figcaption></figure></div>
   <ol class="stappen" id="stControl"></ol>
   <div class="wat" id="watControl"></div></div>
 </section>
@@ -262,7 +262,7 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
  <h2>Zapper Screen</h2>
  <p class="sub" data-t="sSub"></p>
  <div class="kaart">
-  <div class="beelden een"><figure><a href="beeld/gids-scherm.webp" target="_blank"><img src="beeld/gids-scherm.webp" alt="" loading="lazy" width="1600" height="1112"></a><figcaption data-t="sOpTablet"></figcaption></figure></div>
+  <div class="beelden een"><figure><a href="beeld/gids-scherm.webp" target="_blank"><img src="beeld/gids-scherm.webp" alt="" loading="lazy" width="1920" height="1080"></a><figcaption data-t="sOpTablet"></figcaption></figure></div>
   <ol class="stappen" id="stScreen"></ol>
   <div class="os" id="toestel" style="margin-top:14px"><button data-toestel="ipad">iPad / iPhone</button><button data-toestel="android">Android</button><button data-toestel="pc">Windows / Linux</button><button data-toestel="mac">Mac</button><button data-toestel="tv">TV</button></div>
   <ol class="stappen verder" id="stToestel"></ol>
@@ -315,6 +315,7 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
 </div>
 <script>
 const T={
+ navStart:["Aan de slag","Get started"],
  tag:["ZAPPER zap-lamp","ZAPPER zap lamp"],
  titel1:["Elke zap","Every zap"],titel2:["licht op.","lights up."],
  lead:["Een lamp die oplicht bij elke zap op nostr. Alles wat je nodig hebt zit in de lamp zelf: open hem in je browser en je beheert al je Zappers. Geen app, geen account, niets te installeren.","A lamp that lights up on every zap on nostr. Everything you need is in the lamp itself: open it in your browser and you manage all your Zappers. No app, no account, nothing to install."],
@@ -345,8 +346,8 @@ const T={
  scanFout:["Niet gelukt. Controleer het adres, dezelfde wifi en de toestemming voor lokaal netwerk in Chrome of Edge (versie 142 of hoger).","Could not connect. Check the address, same Wi-Fi, and Local Network permission in Chrome or Edge (version 142 or newer)."],
  scanGeen:["Geen andere Zappers gevonden.","No other Zappers found."],
  scanEigen:["Startlamp","Starting lamp"],
- cOpPc:["Zapper Control op een computer","Zapper Control on a computer"],cOpTel:["En op een telefoon","And on a phone"],
- stControl:[["Open een lamp in je browser en tik op <b>Zapper Control</b> in het menu, of op het icoon met de twee lampjes <img class=\"inline-icoon\" src=\"beeld/gids-icoon.webp\" alt=\"\"> rechtsboven.","Open a lamp in your browser and tap <b>Zapper Control</b> in the menu, or the icon with the two lamps <img class=\"inline-icoon\" src=\"beeld/gids-icoon.webp\" alt=\"\"> at the top right."],
+ cOpPc:["Zapper Control op een computer","Zapper Control on a computer (Dutch UI; English available)"],cOpTel:["En op een telefoon","On a phone (Dutch UI; English available)"],
+ stControl:[["Open een lamp in je browser en tik op <b>Zapper Control</b> in het menu, gebruik de zichtbare productlink naast Zapper Screen.","Open a lamp in your browser and tap <b>Zapper Control</b> in the menu, use the visible product link next to Zapper Screen."],
   ["Alle Zappers in je wifi verschijnen vanzelf. Heeft een lamp een ander wachtwoord, dan vraagt zijn kaart het één keer.","Every Zapper on your Wi-Fi shows up by itself. Does a lamp have a different password? Its card asks for it once."],
   ["Op je telefoon: tik op het telefoonicoon <span class=\"knopje\"><svg viewBox=\"0 0 24 24\"><rect x=\"7\" y=\"2.5\" width=\"10\" height=\"19\" rx=\"2.5\"/><path d=\"M11 18.5h2\"/></svg></span> en scan de code. Zet de pagina daar met <b>Delen</b>, <b>Zet op beginscherm</b> als app op je beginscherm.","On your phone: tap the phone icon <span class=\"knopje\"><svg viewBox=\"0 0 24 24\"><rect x=\"7\" y=\"2.5\" width=\"10\" height=\"19\" rx=\"2.5\"/><path d=\"M11 18.5h2\"/></svg></span> and scan the code. Put the page on your home screen there as an app with <b>Share</b>, <b>Add to Home Screen</b>."]],
  watControl:[["Bovenaan","At the top"],["Updates met één knop, en of alles in orde is of welke lamp aandacht vraagt. Daaronder zaps, sats, grootste zap en de blokhoogte.","Updates with one button, and whether all is well or which lamp needs attention. Below it zaps, sats, biggest zap and the block height."],
@@ -438,13 +439,13 @@ function scanBasisAdres(){
  return 'http://'+h;
 }
 async function scanZappers(){
- const box=$('scanResultaat');box.textContent=T.scanBezig[i()];
+ const box=$('scanResultaat');box.textContent=T.scanBezig[i()];let basis='';
  try{
-  const url=scanBasisAdres()+'/api/ontdek',ac=new AbortController(),tm=setTimeout(()=>ac.abort(),12000);
+  basis=scanBasisAdres();const url=basis+'/api/ontdek',ac=new AbortController(),tm=setTimeout(()=>ac.abort(),12000);
   let r;try{r=await fetch(url,{mode:'cors',cache:'no-store',targetAddressSpace:'local',signal:ac.signal})}finally{clearTimeout(tm)}
   if(!r.ok)throw new Error('http');const d=await r.json(),buren=d.buren||[],found=[{host:d.ik,ip:d.ipIk,naam:'',versie:'',own:true},...buren];
   box.innerHTML=`<div class="wat">${found.map(l=>`<div><b>${l.own?esc(T.scanEigen[i()]):esc(l.naam||l.host||l.ip)}</b>${esc(l.host||'')} · ${esc(l.ip||'')} · ${esc(l.versie||'')}<br><a class="pil paars" href="http://${encodeURIComponent(l.ip||l.host)}/control" target="_blank" rel="noopener">Zapper Control</a></div>`).join('')}</div>`+(!buren.length?`<p style="margin-top:14px">${esc(T.scanGeen[i()])}</p>`:'');
- }catch(e){box.textContent=T.scanFout[i()]}
+ }catch(e){box.textContent=T.scanFout[i()];if(basis){const a=document.createElement('a');a.href=basis+'/control';a.textContent=i()?'Open lamp directly':'Open lamp rechtstreeks';a.className='knop';box.appendChild(document.createElement('br'));box.appendChild(a)}}
 }
 // ---- what changed in earlier versions (the files themselves go through the USB flasher)
 function tekenEerder(){if(!versies||!manifest)return;const oud=versies.filter(x=>x.versie!==manifest.versie).slice(0,8);
