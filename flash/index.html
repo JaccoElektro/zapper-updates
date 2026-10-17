@@ -471,7 +471,7 @@ function renderFirmware(){
  $('flash').textContent=w&&apparaat.herkend?t('fKnopWis'):!apparaat.herkend?t('fKnopNieuw'):apparaat.firmware===v?t('fKnopOpnieuw'):t('fKnopBij');
  $('fNieuwePrint').classList.toggle('verborgen',!!apparaat.herkend);
  const nieuwste=v===manifest.versie;$('fChip').className='chip '+(nieuwste&&manifestOk?'groen':'');$('fChip').textContent=nieuwste?(manifestOk?t('ondertekend'):''):t('ouder');
- document.querySelectorAll('[data-bord]').forEach(b=>b.classList.toggle('actief',b.dataset.bord===bord));
+ document.querySelectorAll('[data-bord]').forEach(b=>b.classList.toggle('actief',bordBewust&&b.dataset.bord===bord));
  $('flash').disabled=bezig||(!kanBij&&!w)||(!apparaat.herkend&&!bordBewust);
 }
 function tekenVersies(){
