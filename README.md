@@ -31,3 +31,18 @@ from this repository by GitHub Pages).
 ## Newest
 
 Version **1.15.2**, 2026-10-29.
+
+## Zappie
+
+The same [USB flasher](https://jaccoelektro.github.io/zapper-updates/flash/)
+also installs **Zappie** on the ESP32-C6-Zero, with its onboard RGB LED and an
+active buzzer. On a new board choose **Zappie (RGB)** and explicitly select **Erase
+everything**. A recognised running Zappie can be updated while preserving its
+settings and Nostr identity.
+
+Zappie 1.15.4 is the first hardware-test version. Its signed catalog is separate:
+[`zappie/manifest.json`](zappie/manifest.json),
+[`zappie/manifest.sig`](zappie/manifest.sig) and
+[`zappie/versies.json`](zappie/versies.json). Existing Zapper updates retain their
+own versions and signed catalog. Automatic OTA checks in Zappie remain disabled;
+USB installation and manual OTA are available.

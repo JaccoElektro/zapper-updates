@@ -91,7 +91,7 @@ details.meer[open] summary::before{transform:rotate(90deg)}
 select,input{width:100%;padding:12px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(8,3,18,.55);color:var(--ink);font:15px var(--font)}
 select{-webkit-appearance:none;appearance:none;padding-right:38px;background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9bfdc' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:11px}
 select:focus,input:focus{outline:0;border-color:#b84dff;box-shadow:0 0 0 4px rgba(157,0,249,.3)}
-.keuze{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:13px;background:rgba(0,0,0,.28);border:1px solid var(--hair)}
+.keuze{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border-radius:13px;background:rgba(0,0,0,.28);border:1px solid var(--hair)}
 .keuze button{border:0;background:none;color:var(--soft);font:650 14px var(--font);padding:9px 6px;border-radius:10px;cursor:pointer}
 .keuze button.actief{background:var(--knop);color:#fff}
 .vink{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--soft);cursor:pointer}
@@ -161,7 +161,7 @@ select:focus,input:focus{outline:0;border-color:#b84dff;box-shadow:0 0 0 4px rgb
    <details class="meer" id="fMeer"><summary data-t="meer"></summary>
     <div class="opties">
      <div><label class="kop" data-t="versie"></label><select id="versie"></select></div>
-     <div><label class="kop" data-t="print"></label><div class="keuze"><button data-bord="zapper-reva" data-t="bordReva"></button><button data-bord="lamp01" data-t="bordLamp01"></button></div></div>
+     <div><label class="kop" data-t="print"></label><div class="keuze"><button data-bord="zapper-reva" data-t="bordReva"></button><button data-bord="lamp01" data-t="bordLamp01"></button><button data-bord="zappie" data-t="bordZappie"></button></div></div>
      <label class="vink"><input type="checkbox" id="wis"><span><b data-t="wisKop"></b><br><span data-t="wisUit"></span></span></label>
     </div>
    </details>
@@ -206,21 +206,23 @@ const T={
  bootTip:["Haal de USB-kabel even los, sluit hem weer aan en probeer het opnieuw. Helpt dat niet: houd BOOT ingedrukt, tik op RESET en laat BOOT los.","Unplug the USB cable for a moment, plug it back in and try again. If that does not help: hold BOOT, tap RESET and let go of BOOT."],
  usbLog:["USB logboek","USB log"],
  poortOpenUit:["De browser kan de USB-poort niet openen. Sluit andere USB-flasher-tabbladen en seriële monitors. Sluit de kabel opnieuw aan en kies de nieuwe USB-poort via Verbind je Zapper.","The browser cannot open the USB port. Close other USB flasher tabs and serial monitors. Reconnect the cable and choose the new USB port using Connect your Zapper."],
- nieuwePrint:["Deze print heeft geen herkende Zapper-installatie. Kies hieronder ZAPPER REV A of Zelfbouw. Vink daarna Alles wissen aan om de eerste installatie toe te staan. Eventuele bestaande instellingen en sleutels worden dan verwijderd.","This board has no recognised Zapper installation. Choose ZAPPER REV A or Self-built below. Then select Erase everything to allow the first installation. Any existing settings and keys will be removed."],
+ nieuwePrint:["Kies hieronder ZAPPER REV A, Zelfbouw met MOSFET of Zappie met alleen RGB-led en buzzer. Een lege ESP32-C6 vertelt niet welke uitvoering je hebt. Vink daarna Alles wissen aan om de installatie toe te staan. Eventuele bestaande instellingen en sleutels worden dan verwijderd.","Choose ZAPPER REV A, Self-built with a MOSFET, or Zappie with only the RGB LED and buzzer below. An empty ESP32-C6 cannot identify which model you have. Then select Erase everything to allow installation. Any existing settings and keys will be removed."],
  nietC6:["Dit is geen ZAPPER: de chip is %c.","This is not a ZAPPER: the chip is %c."],fout:["Mislukt: %f","Failed: %f"],
  ander:["Andere Zapper","Another Zapper"],
- subZapper:["ZAPPER %v · %w","ZAPPER %v · %w"],subOud:["ZAPPER, oudere versie","ZAPPER, older version"],subLeeg:["Nieuwe print, nog leeg","New board, still empty"],subAnders:["Andere firmware","Other firmware"],
+ subZapper:["%p %v · %w","%p %v · %w"],subOud:["ZAPPER, oudere versie","ZAPPER, older version"],subLeeg:["Nieuwe print, nog leeg","New board, still empty"],subAnders:["Andere firmware","Other firmware"],
  opWifi:["op %s","on %s"],geenWifi:["nog geen wifi","no Wi-Fi yet"],nietOpWifi:["niet verbonden met %s","not connected to %s"],
  firmware:["Firmware","Firmware"],wifi:["Wifi","Wi-Fi"],
  fNieuwst:["✓ De nieuwste (%v)","✓ The newest (%v)"],fBeschikbaar:["%v beschikbaar","%v available"],fLeeg:["Nog niets geïnstalleerd","Nothing installed yet"],fOud:["Bijwerken aanbevolen","Update recommended"],
  wOp:["✓ Verbonden met %s","✓ Connected to %s"],wGeen:["Nog geen wifi","No Wi-Fi yet"],wNiet:["Niet verbonden met %s","Not connected to %s"],wEerst:["Eerst firmware installeren","Install firmware first"],wOud:["Eerst bijwerken","Update first"],
- fKopBij:["Bijwerken naar %v","Update to %v"],fKopOpnieuw:["%v opnieuw installeren","Reinstall %v"],fKopNieuw:["ZAPPER %v installeren","Install ZAPPER %v"],fKopWis:["Alles wissen en %v installeren","Erase everything and install %v"],
+ fKopBij:["Bijwerken naar %v","Update to %v"],fKopOpnieuw:["%v opnieuw installeren","Reinstall %v"],fKopNieuw:["%p %v installeren","Install %p %v"],fKopWis:["Alles wissen en %v installeren","Erase everything and install %v"],
  fKnopBij:["Bijwerken","Update"],fKnopOpnieuw:["Opnieuw installeren","Reinstall"],fKnopNieuw:["Installeren","Install"],fKnopWis:["Wissen en installeren","Erase and install"],
  fUitlegBij:["Instellingen, wifi en de nostr-sleutel blijven staan. Duurt ongeveer een halve minuut.","Settings, Wi-Fi and the nostr key stay. Takes about half a minute."],
  fUitlegNieuw:["Zet de firmware op de print. Daarna stel je de wifi in.","Puts the firmware on the board. Then you set up the Wi-Fi."],
  fUitlegWis:["Wist alles, ook de nostr-sleutel: de lamp krijgt een nieuw npub.","Erases everything, the nostr key too: the lamp gets a new npub."],
  ondertekend:["✓ Ondertekend en gecontroleerd","✓ Signed and checked"],ouder:["Oudere versie · alleen controlesom","Older version · checksum only"],
- meer:["Meer opties","More options"],versie:["Versie","Version"],print:["Print","Board"],bordReva:["ZAPPER REV A","ZAPPER REV A"],bordLamp01:["Zelfbouw","Self-built"],
+ meer:["Meer opties","More options"],versie:["Versie","Version"],print:["Print","Board"],bordReva:["ZAPPER REV A","ZAPPER REV A"],bordLamp01:["Zelfbouw (MOSFET)","Self-built (MOSFET)"],bordZappie:["Zappie (RGB)","Zappie (RGB)"],
+ catalogFout:["De firmwarelijst voor deze uitvoering is niet beschikbaar. Probeer het later opnieuw.","The firmware list for this model is unavailable. Please try again later."],
+ anderBord:["De lamp meldt een andere uitvoering dan gekozen. Controleer de printkeuze en probeer opnieuw.","The lamp reports a different model than selected. Check the board choice and retry."],
  wisKop:["Alles wissen","Erase everything"],wisUit:["Voor een print die niet meer goed opstart. De lamp krijgt een nieuw npub.","For a board that no longer starts well. The lamp gets a new npub."],
  nieuwst:["%v · de nieuwste","%v · the newest"],
  downloaden:["Firmware ophalen…","Fetching the firmware…"],controleren:["Controleren…","Checking…"],naarFlashstand:["Verbinden met de chip…","Connecting to the chip…"],
@@ -253,12 +255,18 @@ const slaap=ms=>new Promise(r=>setTimeout(r,ms));
 const metLimiet=(belofte,ms,wat)=>Promise.race([belofte,new Promise((_,mis)=>setTimeout(()=>mis(new Error(wat)),ms))]);
 
 // Board names as the update list and the firmware use them.
-const BORD={'zapper-reva':'Zapper REV A','lamp01':'ESP32-C6-Zero + MOSFET'};
-const VAN_FIRMWARE={'Zapper REV A':'zapper-reva','ZapLamp REV A':'zapper-reva','ESP32-C6-Zero + MOSFET':'lamp01'};
+const BORD={'zapper-reva':'Zapper REV A','lamp01':'ESP32-C6-Zero + MOSFET','zappie':'Zappie ESP32-C6-Zero'};
+const VAN_FIRMWARE={'Zapper REV A':'zapper-reva','ZapLamp REV A':'zapper-reva','ESP32-C6-Zero + MOSFET':'lamp01','Zappie ESP32-C6-Zero':'zappie'};
+const KANAAL={zapper:'../',zappie:'../zappie/'};
+const kanaalVoor=b=>b==='zappie'?'zappie':'zapper';
+const productVoor=b=>b==='zappie'?'Zappie':'ZAPPER';
 const RELEASE_PUBKEY='5e3ccae16b53c902c312cc4af9290575915f569fde9439f5a6cc2d7670d7d543';
 
 let poort=null,transport=null,loader=null,apparaat=null,versies=[],manifest=null,manifestOk=false,bord='zapper-reva',bordBewust=false,paneel=null,bezig=false;
 let netwerken=null,gekozenNet=null,wachter=null,stoppen=false;
+const catalogi={};
+function kiesCatalog(){const c=catalogi[kanaalVoor(bord)];manifest=c?.manifest||null;manifestOk=!!c?.ok;versies=c?.versies||[]}
+function nieuwsteVoor(b){return catalogi[kanaalVoor(b)]?.manifest?.versie||null}
 
 // ---- the signature on the update list (BIP340, as nostr and the lamp)
 const SP=2n**256n-0x1000003D1n,SN=0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141n;
@@ -285,12 +293,22 @@ async function bip340(pubHex,msg,sigHex){
 
 // ---- the lists of firmware
 async function laadLijsten(){
- const ruw=new Uint8Array(await(await fetch('../manifest.json',{cache:'no-store'})).arrayBuffer());
- manifest=JSON.parse(new TextDecoder().decode(ruw));
- const sig=await(await fetch('../manifest.sig',{cache:'no-store'})).text();
- manifestOk=await bip340(RELEASE_PUBKEY,await sha(ruw),sig);
- try{versies=await(await fetch('../versies.json',{cache:'no-store'})).json()}catch(e){versies=[]}
- if(!versies.some(v=>v.versie===manifest.versie))versies.unshift({versie:manifest.versie,datum:manifest.datum,firmware:manifest.firmware,fabriek:manifest.fabriek});
+ await Promise.all(Object.entries(KANAAL).map(async([naam,basis])=>{
+  try{
+   const [mr,sr]=await Promise.all([fetch(basis+'manifest.json',{cache:'no-store'}),fetch(basis+'manifest.sig',{cache:'no-store'})]);
+   if(!mr.ok||!sr.ok)throw new Error('catalog unavailable');
+   const ruw=new Uint8Array(await mr.arrayBuffer()),m=JSON.parse(new TextDecoder().decode(ruw));
+   const ok=await bip340(RELEASE_PUBKEY,await sha(ruw),await sr.text());
+   let lijst=[];
+   try{const r=await fetch(basis+'versies.json',{cache:'no-store'});if(r.ok)lijst=await r.json()}catch(e){}
+   if(!Array.isArray(lijst))lijst=[];
+   // The signed newest entry is authoritative, even if the history is stale.
+   lijst=lijst.filter(v=>v.versie!==m.versie);
+   lijst.unshift({versie:m.versie,datum:m.datum,firmware:m.firmware,fabriek:m.fabriek});
+   catalogi[naam]={manifest:m,ok,versies:lijst};
+  }catch(e){catalogi[naam]={manifest:null,ok:false,versies:[]};console.warn('catalog',naam,e)}
+ }));
+ kiesCatalog();
  render();
 }
 function vgl(a,b){const x=String(a).match(/\d+/g)||[],y=String(b).match(/\d+/g)||[];
@@ -368,7 +386,7 @@ async function wachtOpFirmware(ms,mac){
 function leesTabel(b){const uit=[];for(let o=0;o+32<=b.length;o+=32){const e=b.subarray(o,o+32);if(e[0]!==0xAA||e[1]!==0x50)break;
  const dv=new DataView(e.buffer,e.byteOffset,32);uit.push({type:e[2],sub:e[3],adres:dv.getUint32(4,true),grootte:dv.getUint32(8,true),
   naam:new TextDecoder().decode(e.subarray(12,28)).replace(/\0.*$/,'')})}return uit}
-function herken(tabel){const app=tabel.find(p=>p.type===0&&p.sub===0x10),od=tabel.find(p=>p.type===1&&p.sub===0);
+function herkenLayout(tabel){const app=tabel.find(p=>p.type===0&&p.sub===0x10),od=tabel.find(p=>p.type===1&&p.sub===0);
  if(!app||!od)return null;
  if(app.adres===0x20000&&app.naam==='ota_0')return'zapper-reva';
  if(app.adres===0x10000&&app.naam==='app0')return'lamp01';
@@ -394,10 +412,14 @@ async function verbind(){
    const chip=await espOpen();
    const mac=await loader.chip.readMac(loader);
    const tabel=leesTabel(await loader.readFlash(0x8000,0xC00));
-   apparaat={naam:'zapper-'+mac.replace(/:/g,'').slice(-4).toLowerCase(),mac:mac.toLowerCase(),chip,herkend:herken(tabel),leeg:!tabel.length,firmware:null,wifi:null};
+   // app0/default_8MB is shared by the MOSFET prototype and Zappie. Only
+   // running firmware can identify which of those two models is attached.
+   const layout=herkenLayout(tabel);
+   apparaat={naam:'zapper-'+mac.replace(/:/g,'').slice(-4).toLowerCase(),mac:mac.toLowerCase(),chip,herkend:layout==='zapper-reva'?layout:null,leeg:!tabel.length,firmware:null,wifi:null};
    if(apparaat.herkend)await espSluit(true);  // older ZAPPER firmware: let it run again
   }
   bordBewust=!!apparaat.herkend;if(apparaat.herkend)bord=apparaat.herkend;else $('fMeer').open=true;
+  kiesCatalog();
   $('wis').checked=false; // erasing always needs an explicit choice
   // the obvious next step opens by itself
   paneel=!apparaat.firmware||!isNieuwst()?'firmware':(apparaat.wifi&&!apparaat.wifi.verbonden?'wifi':null);zet('fStatus','');zet('wStatus','');
@@ -407,7 +429,7 @@ async function verbind(){
 function usbFout(e){const bericht=e?.message||String(e);return /failed to open|port.*(?:already open|in use)|access.*denied|device.*busy/i.test(bericht)
  ?t('poortOpenUit'):t('fout',{f:bericht})+' '+t('bootTip')}
 function toonBeginFout(s){$('beginFout').textContent=s;$('beginFout').classList.remove('verborgen');$('verbind').textContent=t('verbind')}
-const isNieuwst=()=>apparaat&&apparaat.firmware&&manifest&&vgl(apparaat.firmware,manifest.versie)>=0;
+const isNieuwst=()=>apparaat&&apparaat.firmware&&nieuwsteVoor(apparaat.herkend||bord)&&vgl(apparaat.firmware,nieuwsteVoor(apparaat.herkend||bord))>=0;
 const wifiKan=()=>apparaat&&apparaat.wifi&&ser.open;
 // why Wi-Fi cannot be set right now: no firmware, too old, or the lamp restarted and must be found again
 const wifiBlok=()=>!apparaat||wifiKan()?null:apparaat.leeg?'leeg':!apparaat.firmware||vgl(apparaat.firmware,'1.12.4')<0?'oud':'los';
@@ -424,7 +446,8 @@ function wachtTerug(){
   if(wachter===mijn)wachter=null;render()})()}
 async function stopWachter(){const w=wachter;if(w){stoppen=true;w.stop=true;try{await w.klaar}finally{stoppen=false}}}
 function neemOver(st){
- apparaat={...apparaat,naam:st.host,firmware:st.versie.split(' ')[0],herkend:VAN_FIRMWARE[st.board]||apparaat.herkend,wifi:st,leeg:false};
+ apparaat={...apparaat,naam:st.host,firmware:st.versie.split(' ')[0],herkend:VAN_FIRMWARE[st.board]||null,wifi:st,leeg:false};
+ if(apparaat.herkend){bord=apparaat.herkend;bordBewust=true;kiesCatalog()}
  netwerken=null;gekozenNet=null;
  // just flashed and found back: say so; the next step opens by itself
  const naFlash=!!$('fStatus').querySelector('.wacht');
@@ -446,12 +469,12 @@ function render(){
  // the lamp
  $('lampNaam').textContent=a.naam;$('lampMac').textContent='MAC '+a.mac;
  const w=a.wifi?(a.wifi.instelstand?t('geenWifi'):a.wifi.verbonden?t('opWifi',{s:a.wifi.ssid}):t('nietOpWifi',{s:a.wifi.ssid})):'';
- $('lampSub').textContent=a.firmware?t('subZapper',{v:a.firmware,w}):a.herkend?t('subOud'):a.leeg?t('subLeeg'):t('subAnders');
+ $('lampSub').textContent=a.firmware?t('subZapper',{p:productVoor(a.herkend),v:a.firmware,w}):a.herkend?t('subOud'):a.leeg?t('subLeeg'):t('subAnders');
  $('lampImg').src='../beeld/lamp-'+(a.leeg?'uit':'aan')+'.svg';
  // firmware tile
  const fs=$('fStand');
  if(a.firmware&&isNieuwst()){fs.textContent=t('fNieuwst',{v:a.firmware});fs.className='stand goed'}
- else if(a.firmware){fs.textContent=t('fBeschikbaar',{v:manifest?manifest.versie:'…'});fs.className='stand let'}
+ else if(a.firmware){fs.textContent=t('fBeschikbaar',{v:nieuwsteVoor(a.herkend||bord)||'…'});fs.className='stand let'}
  else if(a.leeg){fs.textContent=t('fLeeg');fs.className='stand let'}
  else{fs.textContent=t('fOud');fs.className='stand let'}
  // Wi-Fi tile
@@ -465,18 +488,19 @@ function render(){
  renderFirmware();renderWifi();
 }
 function renderFirmware(){
- if(!manifest||!apparaat)return;
+ if(!apparaat)return;
+ document.querySelectorAll('[data-bord]').forEach(b=>b.classList.toggle('actief',bordBewust&&b.dataset.bord===bord));
+ $('fNieuwePrint').classList.toggle('verborgen',!!apparaat.herkend);
+ if(!manifest){$('versie').innerHTML='';$('flash').disabled=true;$('flash').textContent=t('fKnopNieuw');$('fKop').textContent=productVoor(bord);$('fUitleg').textContent=t('catalogFout');$('fChip').textContent='';zet('fStatus',t('catalogFout'),true);return}
  tekenVersies();
  const v=$('versie').value||manifest.versie,wis=$('wis').checked,kanBij=apparaat.herkend===bord;
 
  const w=$('wis').checked;
- $('fKop').textContent=w&&apparaat.herkend?t('fKopWis',{v}):!apparaat.herkend?t('fKopNieuw',{v}):apparaat.firmware===v?t('fKopOpnieuw',{v}):t('fKopBij',{v});
+ $('fKop').textContent=w&&apparaat.herkend?t('fKopWis',{v}):!apparaat.herkend?t('fKopNieuw',{p:productVoor(bord),v}):apparaat.firmware===v?t('fKopOpnieuw',{v}):t('fKopBij',{v});
  $('fUitleg').textContent=w&&apparaat.herkend?t('fUitlegWis'):!apparaat.herkend?t('fUitlegNieuw'):t('fUitlegBij');
  $('flash').textContent=w&&apparaat.herkend?t('fKnopWis'):!apparaat.herkend?t('fKnopNieuw'):apparaat.firmware===v?t('fKnopOpnieuw'):t('fKnopBij');
- $('fNieuwePrint').classList.toggle('verborgen',!!apparaat.herkend);
  const nieuwste=v===manifest.versie;$('fChip').className='chip '+(nieuwste&&manifestOk?'groen':'');$('fChip').textContent=nieuwste?(manifestOk?t('ondertekend'):''):t('ouder');
- document.querySelectorAll('[data-bord]').forEach(b=>b.classList.toggle('actief',bordBewust&&b.dataset.bord===bord));
- $('flash').disabled=bezig||(!kanBij&&!w)||(!apparaat.herkend&&!bordBewust);
+ $('flash').disabled=bezig||!$('versie').value||(!kanBij&&!w)||(!apparaat.herkend&&!bordBewust);
 }
 function tekenVersies(){
  const sel=$('versie'),voor=sel.value;
@@ -489,8 +513,13 @@ function tekenVersies(){
 async function flash(){
  if(bezig||!apparaat)return;
  await stopWachter();
+ if(!manifest){zet('fStatus',t('catalogFout'),true);return}
+ // Zappie has its own signed channel. It must never fall back to the
+ // original Zapper catalogue or use a corrupt channel's history.
+ if(bord==='zappie'&&!manifestOk){zet('fStatus',t('sigFout'),true);return}
  const versie=$('versie').value,v=versies.find(x=>x.versie===versie);if(!v)return;
  const wis=$('wis').checked;
+ if(!apparaat.herkend&&!bordBewust){zet('fStatus',t('nieuwePrint'),true);return}
  if(!wis&&apparaat.herkend!==bord){zet('fStatus',t('bijNee'),true);return}
  if(wis&&!confirm(taal==='nl'?'Alles wissen? Identiteit, sleutels en instellingen gaan verloren.':'Erase everything? Identity, keys and settings will be lost.'))return;
  const bron=((wis?v.fabriek:v.firmware)||{})[BORD[bord]];
@@ -498,7 +527,9 @@ async function flash(){
  let flashMislukt=false;usbLog('Install '+versie);bezig=true;render();$('balk').classList.remove('verborgen');$('balkVul').style.width='0%';
  try{
   zet('fStatus',t('downloaden'));
-  const data=new Uint8Array(await(await fetch('../firmware/'+versie+'/'+bron.url.split('/').pop())).arrayBuffer());
+  const response=await fetch(KANAAL[kanaalVoor(bord)]+'firmware/'+versie+'/'+bron.url.split('/').pop(),{cache:'no-store'});
+  if(!response.ok)throw new Error(t('catalogFout'));
+  const data=new Uint8Array(await response.arrayBuffer());
   zet('fStatus',t('controleren'));
   // the same check as an update over the internet: the image must match the signed list
   if(hex(await sha(data))!==bron.sha256||data.length!==bron.grootte)throw new Error(t('somFout'));
@@ -509,7 +540,7 @@ async function flash(){
   const tabel=leesTabel(await loader.readFlash(0x8000,0xC00));
   let bestanden;
   if(wis)bestanden=[{data,address:0}];
-  else{if(herken(tabel)!==bord)throw new Error(t('bijNee'));
+  else{if(herkenLayout(tabel)!==(bord==='zappie'?'lamp01':bord))throw new Error(t('bijNee'));
    const app=tabel.find(p=>p.type===0&&p.sub===0x10),od=tabel.find(p=>p.type===1&&p.sub===0);
    if(!od||od.grootte!==0x2000||tabel.some(p=>p!==app&&p!==od&&(app.adres<p.adres+p.grootte&&p.adres<app.adres+data.length||od.adres<p.adres+p.grootte&&p.adres<od.adres+od.grootte)))throw new Error('overlapping or invalid partition table');
    if(data.length>app.grootte)throw new Error('image larger than the app partition');
@@ -525,7 +556,8 @@ async function flash(){
   await espSluit(true);
   // wait until the new firmware answers on USB
   const st=await wachtOpFirmware(45000,mac);
-  if(st){apparaat={...apparaat,naam:st.host,mac,firmware:st.versie.split(' ')[0],herkend:VAN_FIRMWARE[st.board]||bord,wifi:st,leeg:false};
+  if(st){apparaat={...apparaat,naam:st.host,mac,firmware:st.versie.split(' ')[0],herkend:VAN_FIRMWARE[st.board]||null,wifi:st,leeg:false};
+   if(apparaat.herkend!==bord)throw new Error(t('anderBord'));
    if(st.versie.split(' ')[0]!==versie)throw new Error(taal==='nl'?'De lamp meldt een andere firmwareversie. Controleer en probeer opnieuw.':'The lamp reports a different firmware version. Check and retry.');
    let h='<span class="goed">'+esc(t('geflasht',{n:st.host,v:st.versie.split(' ')[0]}))+'</span>';
    if(!st.verbonden)h+='<div style="margin-top:12px"><button class="knop" id="naarWifi">'+esc(t('naarWifi'))+'</button></div>';
@@ -599,7 +631,7 @@ $('verbind').onclick=verbind;$('ander').onclick=verbind;
 $('tFirmware').onclick=()=>open('firmware');$('tWifi').onclick=()=>open('wifi');
 $('flash').onclick=flash;$('wBewaar').onclick=wBewaar;
 $('versie').onchange=renderFirmware;$('wis').onchange=renderFirmware;
-document.querySelectorAll('[data-bord]').forEach(b=>b.onclick=()=>{if(bezig)return;bord=b.dataset.bord;bordBewust=true;renderFirmware()});
+document.querySelectorAll('[data-bord]').forEach(b=>b.onclick=()=>{if(bezig)return;bord=b.dataset.bord;bordBewust=true;kiesCatalog();zet('fStatus','');render()});
 $('netten').onclick=e=>{const b=e.target.closest('button');if(!b||bezig)return;if(b.dataset.zoek){zoekNetten();return}
  gekozenNet=b.dataset.ssid;zet('wStatus','');renderWifi();setTimeout(()=>(gekozenNet==='__ander'?$('wSsidHand'):$('wPass')).focus(),30)};
 $('oog').onclick=()=>{$('wPass').type=$('wPass').type==='password'?'text':'password';render()};

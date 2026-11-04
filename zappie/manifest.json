@@ -1,0 +1,23 @@
+{
+ "app": "zappie",
+ "versie": "1.15.4",
+ "datum": "2026-11-04",
+ "notities": {
+  "nl": "Eerste Zappie-testversie voor de ESP32-C6-Zero: onboard RGB-lichtshow en actieve buzzer. Nog niet op fysieke hardware getest.",
+  "en": "First Zappie test version for ESP32-C6-Zero: onboard RGB light show and active buzzer. Not yet tested on physical hardware."
+ },
+ "firmware": {
+  "Zappie ESP32-C6-Zero": {
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/zappie/firmware/1.15.4/zappie-1.15.4-ota.bin",
+   "sha256": "7891d77ffee17b27fa01ce4f7d68ee4de8e290c0f36404add477a453a62795ba",
+   "grootte": 2549072
+  }
+ },
+ "fabriek": {
+  "Zappie ESP32-C6-Zero": {
+   "url": "https://raw.githubusercontent.com/JaccoElektro/zapper-updates/main/zappie/firmware/1.15.4/zappie-1.15.4-factory.bin",
+   "sha256": "f211b29364e0e5ab2a4521afd18a184332afbfe5e16c32ae5423be529592c247",
+   "grootte": 2614608
+  }
+ }
+}
