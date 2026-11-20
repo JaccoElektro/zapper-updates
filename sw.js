@@ -1,7 +1,7 @@
 // The ZAPPER site: opens offline too. The page and its pictures come from the
 // cache at once and are refreshed in the background; the update list always
 // tries the network first, so the version shown is the newest one.
-const CACHE = 'zapper-app-v10';
+const CACHE = 'zapper-app-v11';
 const KERN = ['./', 'index.html', 'manifest.webmanifest', 'beeld/logo.svg', 'beeld/lamp-aan.svg', 'beeld/lamp-uit.svg',
   'beeld/icon-192.png', 'beeld/icon-512.png', 'beeld/apple-touch-icon.png', 'beeld/pubkey.txt'];
 
@@ -22,8 +22,8 @@ self.addEventListener('fetch', e => {
   }
   // firmware: never from the cache
   if (url.pathname.includes('/firmware/')) return;
-  // A corrected manual must be shown immediately, including to returning visitors.
-  if (url.pathname.endsWith('.pdf')) {
+  // Manuals and their language-specific downloads must be current, with an offline fallback.
+  if (url.pathname.includes('/wifi/') || url.pathname.endsWith('.pdf')) {
     e.respondWith(fetch(e.request, {cache: 'no-store'}).then(r => {
       if (r.status === 200 && !e.request.headers.has('Range')) {
         const k = r.clone(); caches.open(CACHE).then(c => c.put(e.request, k));
