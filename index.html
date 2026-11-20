@@ -215,7 +215,7 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
  <span class="taal"><button data-taal="nl">NL</button><button data-taal="en">EN</button></span>
 </div>
 
-<nav class="productnav" aria-label="ZAPPER"><a href="#start" data-t="navStart"></a><a href="#zapper" data-t="fotoNav"></a><a href="#control">Control</a><a href="#screen">Screen</a><a href="https://jaccoelektro.github.io/zapper-updates/flash/">USB-flasher</a><a href="handleiding-nl.pdf" data-manual data-t="handleiding"></a></nav>
+<nav class="productnav" aria-label="ZAPPER"><a href="#start" data-t="navStart"></a><a href="#zapper" data-t="fotoNav"></a><a href="#control">Control</a><a href="#screen">Screen</a><a href="https://jaccoelektro.github.io/zapper-updates/flash/">USB-flasher</a><a href="wifi/" data-t="wifiGids"></a><a href="handleiding-nl.pdf" data-manual data-t="handleiding"></a></nav>
 <div class="held">
  <div>
   <p class="tag" data-t="tag"></p>
@@ -253,6 +253,7 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
  <h2 data-t="startKop"></h2>
  <p class="sub" data-t="startSub"></p>
  <div class="kaart"><ol class="stappen" id="stStart"></ol></div>
+ <p class="klein" style="margin-top:12px"><a href="wifi/" data-t="wifiGidsLink"></a></p>
 </section>
 
 <section id="control">
@@ -334,6 +335,8 @@ ol.stappen.verder{counter-reset:s 2;margin-top:16px}
 <script>
 const T={
  navStart:["Aan de slag","Get started"],
+ wifiGids:["Nieuwe wifi","New Wi-Fi"],
+ wifiGidsLink:["Verhuis je lampen naar een nieuw wifinetwerk? Volg de korte stappenhandleiding →","Moving your lamps to a new Wi-Fi network? Follow the short step-by-step guide →"],
  fotoNav:["De ZAPPER","The ZAPPER"],
  fotoKop:["Zo ziet de ZAPPER eruit","Meet the ZAPPER"],
  fotoSub:["Een echte ZAPPER REV A, met de behuizing dicht en open.","A real ZAPPER REV A, with the case closed and open."],
@@ -415,7 +418,7 @@ const T={
   [["Moet ik iets installeren?","Do I need to install anything?"],["Nee. Zapper Control en Zapper Screen zitten in elke lamp en werken in elke browser. Alleen voor de USB-flasher heb je Chrome of Edge op een computer nodig.","No. Zapper Control and Zapper Screen are in every lamp and work in any browser. Only the USB flasher needs Chrome or Edge on a computer."]],
   [["Mijn Zapper staat er niet bij","My Zapper does not show up"],["Zit je toestel op dezelfde wifi? Een gastnetwerk houdt apparaten vaak uit elkaar. Probeer het adres met cijfers (te vinden in je router of op de lamp onder Systeem), en kijk of het lampje op het board groen is.","Is your device on the same Wi-Fi? A guest network often keeps devices apart. Try the address in numbers (in your router, or on the lamp under System), and check that the light on the board is green."]],
   [["Ik ben het wachtwoord vergeten","I forgot the password"],["Houd de knop op het board 10 seconden ingedrukt. De lamp gaat terug naar de fabrieksinstellingen; het wachtwoord is dan weer Bitcoin21. Verander het na het inloggen bij Instellingen.","Hold the button on the board for 10 seconds. The lamp goes back to factory settings; the password is Bitcoin21 again. Change it after logging in, under Settings."]],
-  [["Hoe zet ik mijn Zappers op een ander netwerk?","How do I move my Zappers to another network?"],["Allemaal tegelijk: in Zapper Control, kies ze en open Wifi. Elke lamp kijkt eerst of hij het nieuwe netwerk ziet en blijft anders zoals hij is. Staat de lamp al op een nieuwe plek: sluit hem met USB aan en kies het netwerk in de USB-flasher.","All at once: in Zapper Control, select them and open Wi-Fi. Each lamp first checks that it sees the new network and otherwise stays as it is. Is the lamp already at a new place: connect it with USB and choose the network in the USB flasher."]],
+  [["Hoe zet ik mijn Zappers op een ander netwerk?","How do I move my Zappers to another network?"],["Zie de <a href='wifi/'>korte stappenhandleiding</a>: via de bestaande verbinding, het instelnetwerk op je telefoon of USB op een computer. Ook meerdere Zappers tegelijk staan erin.","See the <a href='wifi/'>short step-by-step guide</a>: use the existing connection, the setup network on your phone or USB on a computer. It also covers several Zappers at once."]],
   [["Wat als een update mislukt?","What if an update fails?"],["Dan draait de lamp gewoon door op de oude versie. Hij installeert alleen wat bij de ondertekende lijst hoort, en start pas opnieuw als het nieuwe bestand helemaal klopt.","Then the lamp keeps running the old version. It only installs what matches the signed list, and only restarts once the new file is complete and correct."]],
   [["Werkt dit ook buiten mijn huis?","Does this work away from home?"],["Je lampen beheren kan alleen op je eigen netwerk; zo kan niemand van buiten erbij. Updates haalt een lamp wel zelf van internet, en zaps komen overal vandaan.","Managing your lamps only works on your own network, so nobody outside can get in. A lamp does fetch updates from the internet itself, and zaps come from anywhere."]],
   [["Waarom zegt mijn browser ‘niet beveiligd’?","Why does my browser say ‘not secure’?"],["Een lamp praat gewoon http in je eigen netwerk, zonder certificaat. Je wachtwoord gaat er niet als leesbare tekst overheen: de browser rekent er eerst een eenmalige code mee uit.","A lamp speaks plain http on your own network, without a certificate. Your password does not travel as readable text: the browser first works out a one-time code with it."]],
